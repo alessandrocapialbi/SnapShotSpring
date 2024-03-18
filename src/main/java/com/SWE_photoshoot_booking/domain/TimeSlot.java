@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
 import java.time.LocalTime;
 
 @Data
@@ -27,11 +26,11 @@ public class TimeSlot {
 
     private LocalTime endTime;
 
-    private String Notes;
+    private String notes;
 
     private boolean booked;
 
-    @ManyToOne(cascade = CascadeType.ALL) // Update and Delete on CASCADE
+    @ManyToOne(cascade = CascadeType.REMOVE) // Update and Delete on CASCADE
     @JoinColumn(name = "photographerID")
     private Photographer photographer;
 

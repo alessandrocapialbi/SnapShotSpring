@@ -18,19 +18,19 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long appointmentID;
 
-    @ManyToOne(cascade = CascadeType.ALL) // Update and Delete on CASCADE
-    @JoinColumn(name = "userID")
-    private User user;
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "customerID")
+    private Customer customer;
 
-    @ManyToOne(cascade = CascadeType.ALL) // Update and Delete on CASCADE
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "photoshootID")
     private Photoshoot photoshoot;
 
-    @ManyToOne(cascade = CascadeType.ALL) // Update and Delete on CASCADE
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "timeslotID")
     private TimeSlot timeslot;
 
-    @ManyToOne(cascade = CascadeType.ALL) // Update and Delete on CASCADE
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "photographerID")
     private Photographer photographer;
 
