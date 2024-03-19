@@ -23,7 +23,7 @@ public class Photoshoot {
 
     private Integer price;
 
-    @ManyToOne(cascade = CascadeType.REMOVE) // Update and Delete on CASCADE
+    @ManyToOne(cascade = CascadeType.ALL) // Update and Delete on CASCADE
     @JoinColumn(name = "photographerID")
     private Photographer photographer;
 
