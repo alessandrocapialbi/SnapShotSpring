@@ -3,7 +3,6 @@ import com.SWE_photoshoot_booking.domain.dto.CustomerDto;
 import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
 import com.SWE_photoshoot_booking.mappers.Mapper;
 import com.SWE_photoshoot_booking.services.CustomerService;
-import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CustomerController {
 
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
-    private Mapper<CustomerEntity, CustomerDto> customerMapper;
+    private final Mapper<CustomerEntity, CustomerDto> customerMapper;
 
-    public CustomerController(CustomerService customerService){
+    public CustomerController(CustomerService customerService, Mapper<CustomerEntity, CustomerDto> customerMapper){
         this.customerService = customerService;
         this.customerMapper = customerMapper;
     }
