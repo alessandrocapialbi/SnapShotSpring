@@ -1,4 +1,4 @@
-package com.SWE_photoshoot_booking.domain;
+package com.SWE_photoshoot_booking.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,25 +6,32 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "photoshoot")
-public class Photoshoot {
+@Table(name = "timeslot")
+public class TimeSlotEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long photoshootID;
+    private Long timeslotID;
 
-    private String name;
+    private Integer dayOfWeek;
 
-    private Integer price;
+    private LocalTime startTime;
+
+    private LocalTime endTime;
+
+    private String notes;
+
+    private boolean booked;
 
     @ManyToOne(cascade = CascadeType.ALL) // Update and Delete on CASCADE
     @JoinColumn(name = "photographerID")
-    private Photographer photographer;
+    private PhotographerEntity photographerEntity;
 
 }

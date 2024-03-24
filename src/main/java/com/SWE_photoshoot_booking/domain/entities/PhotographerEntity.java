@@ -1,4 +1,4 @@
-package com.SWE_photoshoot_booking.domain;
+package com.SWE_photoshoot_booking.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "photographer")
-public class Photographer {
+@Table(name = "photographerEntity")
+public class PhotographerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

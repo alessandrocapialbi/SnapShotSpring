@@ -1,4 +1,4 @@
-package com.SWE_photoshoot_booking.domain;
+package com.SWE_photoshoot_booking.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "appointment")
-public class Appointment {
+public class AppointmentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,18 +20,18 @@ public class Appointment {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customerID")
-    private Customer customer;
+    private CustomerEntity customerEntity;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "photoshootID")
-    private Photoshoot photoshoot;
+    private PhotoshootEntity photoshootEntity;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "timeslotID")
-    private TimeSlot timeslot;
+    private TimeSlotEntity timeslot;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "photographerID")
-    private Photographer photographer;
+    private PhotographerEntity photographerEntity;
 
 }

@@ -1,12 +1,12 @@
 package com.SWE_photoshoot_booking.repositories;
 
-import com.SWE_photoshoot_booking.domain.Customer;
+import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
 
 public final class TestDataUtil {
     private TestDataUtil(){}
 
-    public static Customer createTestCustomerA() {
-        return Customer.builder()
+    public static CustomerEntity createTestCustomerA() {
+        return CustomerEntity.builder()
                 .customerID(1L)
                 .name("Jack")
                 .surname("Sparrow")
@@ -15,8 +15,8 @@ public final class TestDataUtil {
                 .telephone("+393980878782").build();
         }
 
-    public static Customer createTestCustomerB() {
-        return Customer.builder()
+    public static CustomerEntity createTestCustomerB() {
+        return CustomerEntity.builder()
                 .customerID(2L)
                 .name("Alessandro")
                 .surname("Capialbi")
@@ -25,8 +25,8 @@ public final class TestDataUtil {
                 .telephone("+3937745898744").build();
     }
 
-    public static Customer createTestCustomerC() {
-        return Customer.builder()
+    public static CustomerEntity createTestCustomerC() {
+        return CustomerEntity.builder()
                 .customerID(3L)
                 .name("Bob")
                 .surname("King")
