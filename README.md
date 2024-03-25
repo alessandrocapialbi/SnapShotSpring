@@ -37,10 +37,6 @@ This project is a web application in Java Spring Boot for managing appointments 
 3. Photographers can log in using their credentials to access admin operations.
 4. Photographers can view, edit, or cancel appointments from the admin dashboard.
 
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request with any improvements or features you'd like to add.
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
