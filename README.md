@@ -25,7 +25,7 @@ This project is a web application in Java Spring Boot for managing appointments 
 
 1. Clone the repository: git clone https://github.com/alessandrocapialbi/SWE_photoshoot_booking/
 2. Navigate to the project directory: cd your_cloned_project_directory
-3. Configure MySQL database settings in `application.properties`.
+3. Configure MySQL database settings in docker-compose.yml or application.properties
 4. Build the project using Maven: mvn clean install
 5. Run the application: java -jar target/your_cloned_project_directory.jar
 6. Access the application in your web browser at `http://localhost:8080`.
