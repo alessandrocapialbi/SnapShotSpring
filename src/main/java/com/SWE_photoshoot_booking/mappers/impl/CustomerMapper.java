@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomerMapper implements Mapper<CustomerEntity, CustomerDto> {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public CustomerMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
@@ -23,4 +23,5 @@ public class CustomerMapper implements Mapper<CustomerEntity, CustomerDto> {
     public CustomerEntity mapFrom(CustomerDto customerDto) {
         return modelMapper.map(customerDto, CustomerEntity.class);
     }
+
 }
