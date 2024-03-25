@@ -3,6 +3,8 @@ import com.SWE_photoshoot_booking.domain.dto.CustomerDto;
 import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
 import com.SWE_photoshoot_booking.mappers.Mapper;
 import com.SWE_photoshoot_booking.services.CustomerService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,10 +22,10 @@ public class CustomerController {
     }
 
     @PostMapping( path = "/customers")
-    public CustomerDto createCustomer(@RequestBody CustomerDto customer){
+    public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customer){
             CustomerEntity customerEntity = customerMapper.mapFrom(customer);
             CustomerEntity savedCustomerEntity = customerService.createCustomer(customerEntity);
-            return customerMapper.mapTo(savedCustomerEntity);
+            return new ResponseEntity<>(customerMapper.mapTo(savedCustomerEntity), HttpStatus.CREATED);
     }
 
 }
