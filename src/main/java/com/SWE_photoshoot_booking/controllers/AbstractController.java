@@ -32,5 +32,4 @@ public abstract class AbstractController<E, D> {
        List<E> listAll = service.findAll();
        return listAll.stream().map(mapper::mapTo).collect(Collectors.toList());
     }
-
 }
