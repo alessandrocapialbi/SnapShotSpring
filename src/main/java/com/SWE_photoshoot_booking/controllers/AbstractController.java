@@ -33,5 +33,4 @@ public abstract class AbstractController<E, D> {
        return listAll.stream().map(mapper::mapTo).collect(Collectors.toList());
     }
 
-
 }
