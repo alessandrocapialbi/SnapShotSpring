@@ -1,8 +1,10 @@
 package com.SWE_photoshoot_booking.services;
 
-public interface AbstractCrudService<T> {
+import java.util.List;
 
-    T create(T entity);
+public interface AbstractCrudService<E> {
 
+    E create(E entity);
 
+    List<E> findAll();
 }

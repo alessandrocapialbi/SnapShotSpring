@@ -6,6 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public abstract class AbstractController<E, D> {
 
     protected final AbstractCrudService<E> service;
@@ -21,6 +24,13 @@ public abstract class AbstractController<E, D> {
         E entity = mapper.mapFrom(dto);
         E savedEntity = service.create(entity);
         return new ResponseEntity<>(mapper.mapTo(savedEntity), HttpStatus.CREATED);
+    }
+
+
+    @GetMapping
+    public List<D> listRecords() {
+       List<E> listAll = service.findAll();
+       return listAll.stream().map(mapper::mapTo).collect(Collectors.toList());
     }
 
 
