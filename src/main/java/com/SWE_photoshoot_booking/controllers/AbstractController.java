@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public abstract class AbstractController<E, D, R extends CrudRepository<E, Long>> {
@@ -30,7 +31,17 @@ public abstract class AbstractController<E, D, R extends CrudRepository<E, Long>
 
     @GetMapping
     public List<D> listRecords() {
-       List<E> listAll = service.findAll();
-       return listAll.stream().map(mapper::mapTo).collect(Collectors.toList());
+        List<E> listAll = service.findAll();
+        return listAll.stream().map(mapper::mapTo).collect(Collectors.toList());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<D> getRecord(@PathVariable("id") Long id) {
+        Optional<E> foundEntity = service.findById(id);
+        return foundEntity.map(E -> {
+            D dto = mapper.mapTo(E);
+            return new ResponseEntity<>(dto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
 }
