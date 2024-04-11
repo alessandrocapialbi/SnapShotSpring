@@ -2,6 +2,7 @@ package com.SWE_photoshoot_booking.controllers;
 
 import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
 import com.SWE_photoshoot_booking.repositories.TestDataUtil;
+import com.SWE_photoshoot_booking.services.impl.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,9 +26,13 @@ public class CustomerControllerIntegrationTests {
 
     private final ObjectMapper objectMapper;
 
+    private CustomerService customerService;
+
+
     @Autowired
-    public CustomerControllerIntegrationTests(MockMvc mockMvc) {
+    public CustomerControllerIntegrationTests(MockMvc mockMvc, CustomerService customerService) {
         this.mockMvc = mockMvc;
+        this.customerService = customerService;
         this.objectMapper = new ObjectMapper();
     }
 
@@ -63,8 +68,20 @@ public class CustomerControllerIntegrationTests {
     @Test
     public void testThatListCustomersReturnsHttpStatus200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/customers")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatListCustomersReturnsListOfCustomers() throws Exception {
+        CustomerEntity testCustomerEntityA = TestDataUtil.createTestCustomerA();
+        customerService.create(testCustomerEntityA);
+        mockMvc.perform(MockMvcRequestBuilders.get("/customers")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(
+                        MockMvcResultMatchers.jsonPath("$[0].customerID").isNumber()).
+                andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Jack"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].surname").value("Sparrow"));
     }
 
 
