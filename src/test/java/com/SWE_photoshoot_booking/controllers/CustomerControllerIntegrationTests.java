@@ -85,4 +85,36 @@ public class CustomerControllerIntegrationTests {
     }
 
 
+    @Test
+    public void testThatGetCustomerReturnsHttpStatus200WhenAuthorExist() throws Exception {
+        CustomerEntity testCustomerEntityA = TestDataUtil.createTestCustomerA();
+        customerService.create(testCustomerEntityA);
+        mockMvc.perform(MockMvcRequestBuilders.get("/customers/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+
+    @Test
+    public void testThatGetCustomerReturnsHttpStatus404WhenNotAuthorExist() throws Exception {
+        CustomerEntity testCustomerEntityA = TestDataUtil.createTestCustomerA();
+        customerService.create(testCustomerEntityA);
+        mockMvc.perform(MockMvcRequestBuilders.get("/customers/99")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    public void testThatGetCustomerReturnsCustomerWhenExists() throws Exception {
+        CustomerEntity testCustomerEntityA = TestDataUtil.createTestCustomerA();
+        customerService.create(testCustomerEntityA);
+        mockMvc.perform(MockMvcRequestBuilders.get("/customers/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(
+                        MockMvcResultMatchers.jsonPath("$.customerID").value(1)).
+                andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Jack"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value("Sparrow"));
+    }
+
+
 }
