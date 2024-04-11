@@ -1,5 +1,6 @@
 package com.SWE_photoshoot_booking.controllers;
 
+import com.SWE_photoshoot_booking.domain.dto.IdentifiableDto;
 import com.SWE_photoshoot_booking.mappers.Mapper;
 import com.SWE_photoshoot_booking.services.AbstractCrudService;
 import org.springframework.data.repository.CrudRepository;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public abstract class AbstractController<E, D, R extends CrudRepository<E, Long>> {
+public abstract class AbstractController<E, D extends IdentifiableDto, R extends CrudRepository<E, Long>> {
 
     protected final AbstractCrudService<E, R> service;
     protected final Mapper<E, D> mapper;
@@ -24,7 +25,7 @@ public abstract class AbstractController<E, D, R extends CrudRepository<E, Long>
     @PostMapping
     public ResponseEntity<D> create(@RequestBody D dto) {
         E entity = mapper.mapFrom(dto);
-        E savedEntity = service.create(entity);
+        E savedEntity = service.save(entity);
         return new ResponseEntity<>(mapper.mapTo(savedEntity), HttpStatus.CREATED);
     }
 
@@ -42,6 +43,18 @@ public abstract class AbstractController<E, D, R extends CrudRepository<E, Long>
             D dto = mapper.mapTo(E);
             return new ResponseEntity<>(dto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<D> fullUpdateRecord(@PathVariable("id") Long id, @RequestBody D dto) {
+        if (!service.isExists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        dto.setId(id);
+        E entity = mapper.mapFrom(dto);
+        E savedEntity = service.save(entity);
+        return new ResponseEntity<>(mapper.mapTo(savedEntity), HttpStatus.OK);
+
     }
 
 }

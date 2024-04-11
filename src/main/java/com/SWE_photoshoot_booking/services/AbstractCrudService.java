@@ -16,7 +16,7 @@ public abstract class AbstractCrudService<E, R extends CrudRepository<E, Long>> 
         this.repository = repository;
     }
 
-    public E create(E entity) {
+    public E save(E entity) {
         return repository.save(entity);
     }
 
@@ -26,5 +26,9 @@ public abstract class AbstractCrudService<E, R extends CrudRepository<E, Long>> 
 
     public Optional<E> findById(Long id) {
         return repository.findById(id);
+    }
+
+    public boolean isExists(Long id) {
+        return repository.existsById(id);
     }
 }

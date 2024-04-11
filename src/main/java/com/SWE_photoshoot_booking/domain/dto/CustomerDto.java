@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CustomerDto {
+public class CustomerDto implements IdentifiableDto {
 
     private Long customerID;
 
@@ -22,5 +22,10 @@ public class CustomerDto {
     private String password;
 
     private String telephone;
+
+    @Override
+    public void setId(Long id) {
+        customerID = id;
+    }
 
 }
