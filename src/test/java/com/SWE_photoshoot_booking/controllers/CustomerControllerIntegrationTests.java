@@ -33,7 +33,7 @@ public class CustomerControllerIntegrationTests {
 
 
     @Test
-    public void TestThatCreateCustomerSuccessfullyReturn201() throws Exception {
+    public void testThatCreateCustomerSuccessfullyReturn201() throws Exception {
         CustomerEntity testCustomerA = TestDataUtil.createTestCustomerA();
         testCustomerA.setCustomerID(null);
         String customerJSON = objectMapper.writeValueAsString(testCustomerA);
@@ -45,7 +45,7 @@ public class CustomerControllerIntegrationTests {
     }
 
     @Test
-    public void TestThatCreateCustomerSuccessfullyReturnCustomer() throws Exception {
+    public void testThatCreateCustomerSuccessfullyReturnCustomer() throws Exception {
         CustomerEntity testCustomerA = TestDataUtil.createTestCustomerA();
         testCustomerA.setCustomerID(null);
         String customerJSON = objectMapper.writeValueAsString(testCustomerA);
@@ -58,6 +58,13 @@ public class CustomerControllerIntegrationTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value("Sparrow"));
 
 
+    }
+
+    @Test
+    public void testThatListCustomersReturnsHttpStatus200() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/customers")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 
