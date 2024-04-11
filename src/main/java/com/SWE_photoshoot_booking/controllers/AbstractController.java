@@ -2,6 +2,7 @@ package com.SWE_photoshoot_booking.controllers;
 
 import com.SWE_photoshoot_booking.mappers.Mapper;
 import com.SWE_photoshoot_booking.services.AbstractCrudService;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class AbstractController<E, D> {
+public abstract class AbstractController<E, D, R extends CrudRepository<E, Long>> {
 
-    protected final AbstractCrudService<E> service;
+    protected final AbstractCrudService<E, R> service;
     protected final Mapper<E, D> mapper;
 
-    protected AbstractController(AbstractCrudService<E> service, Mapper<E, D> mapper) {
+    protected AbstractController(AbstractCrudService<E, R> service, Mapper<E, D> mapper) {
         this.service = service;
         this.mapper = mapper;
     }
