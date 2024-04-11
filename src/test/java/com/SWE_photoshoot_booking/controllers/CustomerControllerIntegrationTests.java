@@ -26,7 +26,7 @@ public class CustomerControllerIntegrationTests {
 
     private final ObjectMapper objectMapper;
 
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
 
     @Autowired
