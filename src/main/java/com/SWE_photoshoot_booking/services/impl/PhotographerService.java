@@ -1,13 +1,9 @@
 package com.SWE_photoshoot_booking.services.impl;
 
-import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
 import com.SWE_photoshoot_booking.domain.entities.PhotographerEntity;
-import com.SWE_photoshoot_booking.repositories.CustomerRepository;
 import com.SWE_photoshoot_booking.repositories.PhotographerRepository;
 import com.SWE_photoshoot_booking.services.AbstractCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
