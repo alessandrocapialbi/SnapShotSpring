@@ -31,9 +31,5 @@ public class CustomerService extends AbstractCrudService<CustomerEntity, Custome
         }).orElseThrow(() -> new RuntimeException("Customer not exists"));
     }
 
-    @Override
-    public Page<CustomerEntity> findAll(Pageable pageable) {
-        return getRepository().findAll(pageable);
-    }
 
 }
