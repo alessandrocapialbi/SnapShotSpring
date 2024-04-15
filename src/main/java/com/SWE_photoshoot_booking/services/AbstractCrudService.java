@@ -35,5 +35,8 @@ public abstract class AbstractCrudService<E, R extends CrudRepository<E, Long>> 
 
     public abstract E partialUpdate(Long id, E entity);
 
+    protected R getRepository() {
+        return repository;
+    }
 
 }
