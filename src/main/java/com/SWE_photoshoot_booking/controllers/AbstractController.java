@@ -66,4 +66,10 @@ public abstract class AbstractController<E, D extends IdentifiableDto, R extends
         return new ResponseEntity<>(mapper.mapTo(updatedEntity), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRecord(@PathVariable("id") Long id) {
+        service.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

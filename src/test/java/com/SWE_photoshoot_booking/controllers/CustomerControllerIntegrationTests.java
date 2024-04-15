@@ -176,4 +176,20 @@ public class CustomerControllerIntegrationTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value(testCustomerDtoA.getSurname()));
 
     }
+
+
+    @Test
+    public void testThatDeleteCustomerReturnsHttpStatus204ForNonExistingCustomer() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/customers/99")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    public void testThatDeleteCustomerReturnsHttpStatus204ForExistingCustomer() throws Exception {
+        CustomerEntity testCustomerEntityA = TestDataUtil.createTestCustomerA();
+        CustomerEntity savedCustomer = customerService.save(testCustomerEntityA);
+        mockMvc.perform(MockMvcRequestBuilders.delete("/customers/" + savedCustomer.getCustomerID())
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
 }

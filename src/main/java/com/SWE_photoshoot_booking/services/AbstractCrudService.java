@@ -38,4 +38,7 @@ public abstract class AbstractCrudService<E, R extends CrudRepository<E, Long>> 
         return repository;
     }
 
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
 }
