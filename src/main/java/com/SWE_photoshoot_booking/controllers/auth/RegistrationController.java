@@ -4,23 +4,30 @@ import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
 import com.SWE_photoshoot_booking.domain.entities.PhotographerEntity;
 import com.SWE_photoshoot_booking.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class RegistrationController {
 
     @Autowired
     private AuthenticationService authenticationService;
 
-    @PostMapping("/register/customer")
-    public CustomerEntity registerCustomer(@RequestBody CustomerEntity customer) {
-        return authenticationService.registerCustomer(customer);
+    @PostMapping("/register")
+    public Object registerUser(@RequestBody CustomerEntity customer, @RequestBody PhotographerEntity photographer) {
+        if (customer != null) {
+            return authenticationService.registerCustomer(customer);
+        } else if (photographer != null) {
+            return authenticationService.registerPhotographer(photographer);
+        } else {
+            throw new IllegalArgumentException("Invalid role");
+        }
     }
 
-    @PostMapping("/register/photographer")
-    public PhotographerEntity registerPhotographer(@RequestBody PhotographerEntity photographer) {
-        return authenticationService.registerPhotographer(photographer);
+    @GetMapping("/register")
+    public String showRegistrationForm() {
+        return "register";
     }
 }

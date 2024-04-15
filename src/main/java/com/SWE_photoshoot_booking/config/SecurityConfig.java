@@ -21,12 +21,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/index.html", "/register/customer", "/register/photographer", "/login").permitAll()
+                        .requestMatchers("/", "/register", "/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
-                        .loginPage("/index.html")
-                        .defaultSuccessUrl("/index.html", true)
+                        .loginPage("/")
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll);
