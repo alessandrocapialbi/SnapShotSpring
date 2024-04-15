@@ -14,11 +14,24 @@ public class CustomerMapper implements Mapper<CustomerEntity, CustomerDto> {
     public CustomerMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
+
+    /**
+     * Maps CustomerEntity to CustomerDto
+     *
+     * @param customerEntity
+     * @return CustomerDto
+     */
     @Override
     public CustomerDto mapTo(CustomerEntity customerEntity) {
         return modelMapper.map(customerEntity, CustomerDto.class);
     }
 
+    /**
+     * Maps CustomerDto to CustomerEntity
+     *
+     * @param customerDto
+     * @return CustomerEntity
+     */
     @Override
     public CustomerEntity mapFrom(CustomerDto customerDto) {
         return modelMapper.map(customerDto, CustomerEntity.class);
