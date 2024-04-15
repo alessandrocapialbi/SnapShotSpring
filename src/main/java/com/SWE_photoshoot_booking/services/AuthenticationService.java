@@ -17,7 +17,7 @@ public class AuthenticationService {
     @Autowired
     private PhotographerRepository photographerRepository;
 
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public CustomerEntity registerCustomer(CustomerEntity customer) {
         String encodedPassword = passwordEncoder.encode(customer.getPassword());
