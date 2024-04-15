@@ -4,6 +4,8 @@ import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
 import com.SWE_photoshoot_booking.repositories.CustomerRepository;
 import com.SWE_photoshoot_booking.services.AbstractCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -27,6 +29,11 @@ public class CustomerService extends AbstractCrudService<CustomerEntity, Custome
             Optional.ofNullable(entity.getTelephone()).ifPresent(existingCustomer::setTelephone);
             return getRepository().save(existingCustomer);
         }).orElseThrow(() -> new RuntimeException("Customer not exists"));
+    }
+
+    @Override
+    public Page<CustomerEntity> findAll(Pageable pageable) {
+        return getRepository().findAll(pageable);
     }
 
 }

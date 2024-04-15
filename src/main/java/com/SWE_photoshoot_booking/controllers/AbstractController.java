@@ -3,16 +3,16 @@ package com.SWE_photoshoot_booking.controllers;
 import com.SWE_photoshoot_booking.domain.dto.IdentifiableDto;
 import com.SWE_photoshoot_booking.mappers.Mapper;
 import com.SWE_photoshoot_booking.services.AbstractCrudService;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-public abstract class AbstractController<E, D extends IdentifiableDto, R extends CrudRepository<E, Long>> {
+
+public abstract class AbstractController<E, D extends IdentifiableDto, R extends JpaRepository<E, Long>> {
 
     protected final AbstractCrudService<E, R> service;
     protected final Mapper<E, D> mapper;
@@ -31,9 +31,9 @@ public abstract class AbstractController<E, D extends IdentifiableDto, R extends
 
 
     @GetMapping
-    public List<D> listRecords() {
-        List<E> listAll = service.findAll();
-        return listAll.stream().map(mapper::mapTo).collect(Collectors.toList());
+    public Page<D> listRecords(Pageable pageable) {
+        Page<E> listAll = service.findAll(pageable);
+        return listAll.map(mapper::mapTo);
     }
 
     @GetMapping("/{id}")
