@@ -18,7 +18,7 @@ public class CustomerMapper implements Mapper<CustomerEntity, CustomerDto> {
     /**
      * Maps CustomerEntity to CustomerDto
      *
-     * @param customerEntity
+     * @param customerEntity customerEntity to convert
      * @return CustomerDto
      */
     @Override
@@ -29,7 +29,7 @@ public class CustomerMapper implements Mapper<CustomerEntity, CustomerDto> {
     /**
      * Maps CustomerDto to CustomerEntity
      *
-     * @param customerDto
+     * @param customerDto customerDto to convert
      * @return CustomerEntity
      */
     @Override
