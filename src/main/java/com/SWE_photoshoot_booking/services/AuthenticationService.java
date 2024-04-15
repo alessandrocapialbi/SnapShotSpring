@@ -5,11 +5,15 @@ import com.SWE_photoshoot_booking.domain.entities.PhotographerEntity;
 import com.SWE_photoshoot_booking.repositories.CustomerRepository;
 import com.SWE_photoshoot_booking.repositories.PhotographerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticationService {
+public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -31,19 +35,24 @@ public class AuthenticationService {
         return photographerRepository.save(photographer);
     }
 
-    public CustomerEntity loginCustomer(String email, String password) {
-        CustomerEntity customer = customerRepository.findByEmail(email);
-        if (customer != null && passwordEncoder.matches(password, customer.getPassword())) {
-            return customer;
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        CustomerEntity customer = customerRepository.findByEmail(username);
+        if (customer != null) {
+            return User.withUsername(customer.getEmail())
+                    .password(customer.getPassword())
+                    .roles("CUSTOMER")
+                    .build();
         }
-        return null;
-    }
 
-    public PhotographerEntity loginPhotographer(String email, String password) {
-        PhotographerEntity photographer = photographerRepository.findByEmail(email);
-        if (photographer != null && passwordEncoder.matches(password, photographer.getPassword())) {
-            return photographer;
+        PhotographerEntity photographer = photographerRepository.findByEmail(username);
+        if (photographer != null) {
+            return User.withUsername(photographer.getEmail())
+                    .password(photographer.getPassword())
+                    .roles("PHOTOGRAPHER")
+                    .build();
         }
-        return null;
+
+        throw new UsernameNotFoundException("User not found with email: " + username);
     }
 }
