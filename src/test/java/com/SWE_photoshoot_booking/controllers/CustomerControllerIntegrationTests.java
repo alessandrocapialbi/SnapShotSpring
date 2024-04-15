@@ -144,4 +144,36 @@ public class CustomerControllerIntegrationTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value(customerDto.getSurname()));
     }
 
+
+    @Test
+    public void testThatPartialUpdateExistingCustomerReturnsHttpStatus200Ok() throws Exception {
+        CustomerEntity testCustomerEntityA = TestDataUtil.createTestCustomerA();
+        CustomerEntity savedCustomer = customerService.save(testCustomerEntityA);
+
+        CustomerDto testCustomerDtoA = TestDataUtil.createTestCustomerDtoA();
+        testCustomerDtoA.setName("UPDATED");
+        String customerDtoJson = objectMapper.writeValueAsString(testCustomerDtoA);
+        mockMvc.perform(MockMvcRequestBuilders.patch("/customers/" + savedCustomer.getCustomerID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(customerDtoJson))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatPartialUpdateExistingCustomerReturnsUpdateCustomer() throws Exception {
+        CustomerEntity testCustomerEntityA = TestDataUtil.createTestCustomerA();
+        CustomerEntity savedCustomer = customerService.save(testCustomerEntityA);
+
+        CustomerDto testCustomerDtoA = TestDataUtil.createTestCustomerDtoA();
+        testCustomerDtoA.setName("UPDATED");
+        String customerDtoJson = objectMapper.writeValueAsString(testCustomerDtoA);
+        mockMvc.perform(MockMvcRequestBuilders.patch("/customers/" + savedCustomer.getCustomerID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(customerDtoJson))
+                .andExpect(
+                        MockMvcResultMatchers.jsonPath("$.customerID").value(savedCustomer.getCustomerID())).
+                andExpect(MockMvcResultMatchers.jsonPath("$.name").value("UPDATED"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value(testCustomerDtoA.getSurname()));
+
+    }
 }

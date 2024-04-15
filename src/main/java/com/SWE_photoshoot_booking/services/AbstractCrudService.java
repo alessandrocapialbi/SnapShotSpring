@@ -1,6 +1,5 @@
 package com.SWE_photoshoot_booking.services;
 
-import com.SWE_photoshoot_booking.domain.dto.IdentifiableDto;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
