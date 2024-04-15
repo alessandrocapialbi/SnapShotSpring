@@ -47,14 +47,23 @@ public abstract class AbstractController<E, D extends IdentifiableDto, R extends
 
     @PutMapping("/{id}")
     public ResponseEntity<D> fullUpdateRecord(@PathVariable("id") Long id, @RequestBody D dto) {
-        if (!service.isExists(id)) {
+        if (service.doesNotExist(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         dto.setId(id);
         E entity = mapper.mapFrom(dto);
         E savedEntity = service.save(entity);
         return new ResponseEntity<>(mapper.mapTo(savedEntity), HttpStatus.OK);
+    }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<D> partialUpdateRecord(@PathVariable("id") Long id, @RequestBody D dto) {
+        if (service.doesNotExist(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        E entity = mapper.mapFrom(dto);
+        E updatedEntity = service.partialUpdate(id, entity);
+        return new ResponseEntity<>(mapper.mapTo(updatedEntity), HttpStatus.OK);
     }
 
 }

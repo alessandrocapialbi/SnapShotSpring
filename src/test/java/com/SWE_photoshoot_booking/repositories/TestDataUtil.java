@@ -1,9 +1,11 @@
 package com.SWE_photoshoot_booking.repositories;
 
+import com.SWE_photoshoot_booking.domain.dto.CustomerDto;
 import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
 
 public final class TestDataUtil {
-    private TestDataUtil(){}
+    private TestDataUtil() {
+    }
 
     public static CustomerEntity createTestCustomerA() {
         return CustomerEntity.builder()
@@ -13,7 +15,7 @@ public final class TestDataUtil {
                 .email("jack.sparrow@example.com")
                 .password("12345678")
                 .telephone("+393980878782").build();
-        }
+    }
 
     public static CustomerEntity createTestCustomerB() {
         return CustomerEntity.builder()
@@ -34,4 +36,14 @@ public final class TestDataUtil {
                 .password("34567875")
                 .telephone("+13980878782").build();
     }
+
+    public static CustomerDto createTestCustomerDtoA() {
+        return CustomerDto.builder()
+                .customerID(1L)
+                .name("Jack")
+                .surname("Sparrow")
+                .email("jack.sparrow@gmail.com")
+                .password("12345678")
+                .telephone("+393980878782").build();
     }
+}

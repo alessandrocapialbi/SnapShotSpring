@@ -24,4 +24,5 @@ public class CustomerEntity {
     private String password;
 
     private String telephone;
+
 }

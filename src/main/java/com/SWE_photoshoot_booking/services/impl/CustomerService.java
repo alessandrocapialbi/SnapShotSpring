@@ -14,4 +14,9 @@ public class CustomerService extends AbstractCrudService<CustomerEntity, Custome
         super(customerRepository);
     }
 
+    @Override
+    public CustomerEntity partialUpdate(Long id, CustomerEntity entity) {
+        return null;
+    }
+
 }

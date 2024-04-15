@@ -1,5 +1,6 @@
 package com.SWE_photoshoot_booking.services;
 
+import com.SWE_photoshoot_booking.domain.dto.IdentifiableDto;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -28,7 +29,11 @@ public abstract class AbstractCrudService<E, R extends CrudRepository<E, Long>> 
         return repository.findById(id);
     }
 
-    public boolean isExists(Long id) {
-        return repository.existsById(id);
+    public boolean doesNotExist(Long id) {
+        return !repository.existsById(id);
     }
+
+    public abstract E partialUpdate(Long id, E entity);
+
+
 }

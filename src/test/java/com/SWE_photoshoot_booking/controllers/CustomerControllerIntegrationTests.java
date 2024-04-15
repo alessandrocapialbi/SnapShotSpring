@@ -1,5 +1,6 @@
 package com.SWE_photoshoot_booking.controllers;
 
+import com.SWE_photoshoot_booking.domain.dto.CustomerDto;
 import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
 import com.SWE_photoshoot_booking.repositories.TestDataUtil;
 import com.SWE_photoshoot_booking.services.impl.CustomerService;
@@ -96,7 +97,7 @@ public class CustomerControllerIntegrationTests {
 
 
     @Test
-    public void testThatGetCustomerReturnsHttpStatus404WhenNotAuthorExist() throws Exception {
+    public void testThatGetCustomerReturnsHttpStatus404WhenNoAuthorExist() throws Exception {
         CustomerEntity testCustomerEntityA = TestDataUtil.createTestCustomerA();
         customerService.save(testCustomerEntityA);
         mockMvc.perform(MockMvcRequestBuilders.get("/customers/99")
@@ -105,16 +106,42 @@ public class CustomerControllerIntegrationTests {
     }
 
     @Test
-    public void testThatGetCustomerReturnsCustomerWhenExists() throws Exception {
-        CustomerEntity testCustomerEntityA = TestDataUtil.createTestCustomerA();
-        customerService.save(testCustomerEntityA);
-        mockMvc.perform(MockMvcRequestBuilders.get("/customers/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(
-                        MockMvcResultMatchers.jsonPath("$.customerID").value(1)).
-                andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Jack"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value("Sparrow"));
+    public void testThatFullUpdateCustomerReturnsHttpStatus404WhenCustomerNotExists() throws Exception {
+        CustomerDto testCustomerDtoA = TestDataUtil.createTestCustomerDtoA();
+        String customerDtoJson = objectMapper.writeValueAsString(testCustomerDtoA);
+        mockMvc.perform(MockMvcRequestBuilders.put("/customers/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(customerDtoJson))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @Test
+    public void testThatFullUpdateCustomerReturnsHttpStatus200WhenCustomerExists() throws Exception {
+        CustomerEntity testCustomerEntityA = TestDataUtil.createTestCustomerA();
+        CustomerEntity savedCustomer = customerService.save(testCustomerEntityA);
+        CustomerDto testCustomerDtoA = TestDataUtil.createTestCustomerDtoA();
+        String customerDtoJson = objectMapper.writeValueAsString(testCustomerDtoA);
+        mockMvc.perform(MockMvcRequestBuilders.put("/customers/" + savedCustomer.getCustomerID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(customerDtoJson))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatFullUpdateUpdatesExistingCustomer() throws Exception {
+        CustomerEntity testCustomerEntityA = TestDataUtil.createTestCustomerA();
+        CustomerEntity savedCustomer = customerService.save(testCustomerEntityA);
+        CustomerEntity customerDto = TestDataUtil.createTestCustomerB();
+        customerDto.setCustomerID(savedCustomer.getCustomerID());
+        String customerDtoUpdateJson = objectMapper.writeValueAsString(customerDto);
+        objectMapper.writeValueAsString(customerDto);
+        mockMvc.perform(MockMvcRequestBuilders.put("/customers/" + savedCustomer.getCustomerID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(customerDtoUpdateJson))
+                .andExpect(
+                        MockMvcResultMatchers.jsonPath("$.customerID").value(savedCustomer.getCustomerID())).
+                andExpect(MockMvcResultMatchers.jsonPath("$.name").value(customerDto.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value(customerDto.getSurname()));
+    }
 
 }
