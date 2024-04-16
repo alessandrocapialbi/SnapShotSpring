@@ -1,5 +1,6 @@
 package com.SWE_photoshoot_booking.services.impl;
 
+import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
 import com.SWE_photoshoot_booking.domain.entities.PhotographerEntity;
 import com.SWE_photoshoot_booking.repositories.PhotographerRepository;
 import com.SWE_photoshoot_booking.services.AbstractCrudService;
@@ -30,6 +31,10 @@ public class PhotographerService extends AbstractCrudService<PhotographerEntity,
             Optional.ofNullable(entity.getSpecialization()).ifPresent(existingPhotographer::setSpecialization);
             return getRepository().save(existingPhotographer);
         }).orElseThrow(() -> new RuntimeException("Photographer not exists"));
+    }
+
+    public PhotographerEntity findPhotographerByEmail(String email) {
+        return getRepository().findByEmail(email);
     }
 
 

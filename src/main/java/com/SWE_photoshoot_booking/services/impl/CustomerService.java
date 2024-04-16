@@ -29,5 +29,9 @@ public class CustomerService extends AbstractCrudService<CustomerEntity, Custome
         }).orElseThrow(() -> new RuntimeException("Customer not exists"));
     }
 
+    public CustomerEntity findCustomerByEmail(String email) {
+        return getRepository().findByEmail(email);
+    }
+
 
 }

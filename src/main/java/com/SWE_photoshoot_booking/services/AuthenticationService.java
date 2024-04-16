@@ -4,6 +4,8 @@ import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
 import com.SWE_photoshoot_booking.domain.entities.PhotographerEntity;
 import com.SWE_photoshoot_booking.repositories.CustomerRepository;
 import com.SWE_photoshoot_booking.repositories.PhotographerRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,24 +17,33 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService implements UserDetailsService {
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
+
+    private final CustomerRepository customerRepository;
+
+    private final PhotographerRepository photographerRepository;
 
     @Autowired
-    private PhotographerRepository photographerRepository;
+    public AuthenticationService(CustomerRepository customerRepository, PhotographerRepository photographerRepository) {
+        this.customerRepository = customerRepository;
+        this.photographerRepository = photographerRepository;
+    }
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public CustomerEntity registerCustomer(CustomerEntity customer) {
+    public void registerCustomer(CustomerEntity customer) {
+        logger.info("registerCustomer called with email: {}", customer.getEmail());
         String encodedPassword = passwordEncoder.encode(customer.getPassword());
         customer.setPassword(encodedPassword);
-        return customerRepository.save(customer);
+        customerRepository.save(customer);
+        logger.info("Customer registration successful for email: {}", customer.getEmail());
     }
 
-    public PhotographerEntity registerPhotographer(PhotographerEntity photographer) {
+    public void registerPhotographer(PhotographerEntity photographer) {
         String encodedPassword = passwordEncoder.encode(photographer.getPassword());
         photographer.setPassword(encodedPassword);
-        return photographerRepository.save(photographer);
+        photographerRepository.save(photographer);
+        logger.info("Photographer registration successful for email: {}", photographer.getEmail());
     }
 
     @Override
@@ -41,7 +52,7 @@ public class AuthenticationService implements UserDetailsService {
         if (customer != null) {
             return User.withUsername(customer.getEmail())
                     .password(customer.getPassword())
-                    .roles("CUSTOMER")
+                    .roles("customer")
                     .build();
         }
 
@@ -49,7 +60,7 @@ public class AuthenticationService implements UserDetailsService {
         if (photographer != null) {
             return User.withUsername(photographer.getEmail())
                     .password(photographer.getPassword())
-                    .roles("PHOTOGRAPHER")
+                    .roles("photographer")
                     .build();
         }
 
