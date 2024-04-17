@@ -10,36 +10,6 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
 </head>
-<script>
-    function showForm(role) {
-        if (role === 'customer') {
-            document.getElementById('customerForm').style.display = 'block';
-            document.getElementById('photographerForm').style.display = 'none';
-            document.getElementById('submitPhotographer').disabled = true;
-            document.getElementById('submitCustomer').disabled = false;
-        } else if (role === 'photographer') {
-            document.getElementById('customerForm').style.display = 'none';
-            document.getElementById('photographerForm').style.display = 'block';
-            document.getElementById('submitCustomer').disabled = true;
-            document.getElementById('submitPhotographer').disabled = false;
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        let currentForm = 'customer';
-        document.getElementById('customerForm').addEventListener('submit', function (event) {
-            if (currentForm !== 'customer') {
-                event.preventDefault();
-            }
-        });
-
-        document.getElementById('photographerForm').addEventListener('submit', function (event) {
-            if (currentForm !== 'photographer') {
-                event.preventDefault();
-            }
-        });
-    });
-</script>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
@@ -69,18 +39,11 @@
                     You have successfully registered!
                 </div>
             </div>
-            <div class="form-group mb-3">
-                <label for="role">Register as:</label>
-                <select id="role" name="role" onchange="showForm(this.value)">
-                    <option value="customer">Customer</option>
-                    <option value="photographer">Photographer</option>
-                </select>
-            </div>
-            <form id="customerForm"
+            <form id="userForm"
                   method="post"
                   role="form"
-                  th:action="@{/register/customer}"
-                  th:object="${customer}"
+                  th:action="@{/register/user}"
+                  th:object="${user}"
             >
                 <div class="form-group mb-3">
                     <label class="form-label">Name</label>
@@ -151,136 +114,18 @@
                     <p th:errors="*{telephone}" class="text-danger"
                        th:if="${#fields.hasErrors('telephone')}"></p>
                 </div>
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                <div class="form-group">
-                    <button class="btn btn-primary" type="submit">Register</button>
-                    <span>Already registered? <a th:href="@{/login}">Login here</a></span>
-                </div>
-            </form>
-
-
-            <form id="photographerForm"
-                  method="post"
-                  role="form"
-                  th:action="@{/register/photographer}"
-                  th:object="${photographer}"
-                  style="display: none;"
-            >
-
                 <div class="form-group mb-3">
-                    <label class="form-label">Name</label>
-                    <input
-                            class="form-control"
-                            id="photographerName"
-                            name="name"
-                            placeholder="Enter first name"
-                            th:field="*{name}"
-                            type="text"
-                    />
-                    <p th:errors="*{name}" class="text-danger"
-                       th:if="${#fields.hasErrors('name')}"></p>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label class="form-label">Surname</label>
-                    <input
-                            class="form-control"
-                            id="photographerSurname"
-                            name="surname"
-                            placeholder="Enter surname"
-                            th:field="*{surname}"
-                            type="text"
-                    />
-                    <p th:errors="*{surname}" class="text-danger"
-                       th:if="${#fields.hasErrors('surname')}"></p>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label class="form-label">Email</label>
-                    <input
-                            class="form-control"
-                            id="photographerEmail"
-                            name="email"
-                            placeholder="Enter email address"
-                            th:field="*{email}"
-                            type="email"
-                    />
-                    <p th:errors="*{email}" class="text-danger"
-                       th:if="${#fields.hasErrors('email')}"></p>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label class="form-label">Password</label>
-                    <input
-                            class="form-control"
-                            id="photographerPassword"
-                            name="password"
-                            placeholder="Enter password"
-                            th:field="*{password}"
-                            type="password"
-                    />
-                    <p th:errors="*{password}" class="text-danger"
-                       th:if="${#fields.hasErrors('password')}"></p>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label class="form-label">Telephone</label>
-                    <input
-                            class="form-control"
-                            id="photographerTelephone"
-                            name="telephone"
-                            placeholder="Enter telephone"
-                            th:field="*{telephone}"
-                            type="text"
-                    />
-                    <p th:errors="*{telephone}" class="text-danger"
-                       th:if="${#fields.hasErrors('telephone')}"></p>
-                </div>
-                <div class="form-group mb-3">
-                    <label class="form-label">WorkingPlace</label>
-                    <input
-                            class="form-control"
-                            id="workingPlace"
-                            name="workingPlace"
-                            placeholder="Enter working place"
-                            th:field="*{workingPlace}"
-                            type="text"
-                    />
-                    <p th:errors="*{workingPlace}" class="text-danger"
-                       th:if="${#fields.hasErrors('workingPlace')}"></p>
-                </div>
-                <div class="form-group mb-3">
-                    <label class="form-label">Years Of Activity</label>
-                    <input
-                            class="form-control"
-                            id="yearsOfActivity"
-                            name="yearsOfActivity"
-                            placeholder="Enter years of activity"
-                            th:field="*{yearsOfActivity}"
-                            type="number"
-                    />
-                    <p th:errors="*{yearsOfActivity}" class="text-danger"
-                       th:if="${#fields.hasErrors('yearsOfActivity')}"></p>
-                </div>
-                <div class="form-group mb-3">
-                    <label class="form-label">Specialization</label>
-                    <input
-                            class="form-control"
-                            id="specialization"
-                            name="specialization"
-                            placeholder="Enter specialization"
-                            th:field="*{specialization}"
-                            type="text"
-                    />
-                    <p th:errors="*{specialization}" class="text-danger"
-                       th:if="${#fields.hasErrors('specialization')}"></p>
+                    <label for="role">Register as:</label>
+                    <select id="role" th:field="*{role}">
+                        <option value="customer">Customer</option>
+                        <option value="photographer">Photographer</option>
+                    </select>
                 </div>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit">Register</button>
                     <span>Already registered? <a th:href="@{/login}">Login here</a></span>
                 </div>
-
             </form>
         </div>
     </div>

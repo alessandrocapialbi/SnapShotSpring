@@ -39,15 +39,15 @@ public class RegistrationController {
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("customer", new UserDto());
+        model.addAttribute("user", new UserDto());
         return "/register";
     }
 
 
     @PostMapping("/register/user")
-    public String registerCustomer(@Valid @ModelAttribute("customer") UserDto userDto,
-                                   BindingResult result,
-                                   Model model) {
+    public String registerUser(@Valid @ModelAttribute("user") UserDto userDto,
+                               BindingResult result,
+                               Model model) {
         UserEntity existingCustomer = userService.findCustomerByEmail(userMapper.mapFrom(userDto).getEmail());
 
         if (existingCustomer != null && existingCustomer.getEmail() != null && !existingCustomer.getEmail().isEmpty()) {
@@ -56,14 +56,14 @@ public class RegistrationController {
         }
 
         if (result.hasErrors()) {
-            model.addAttribute("customer", userDto);
+            model.addAttribute("user", userDto);
             return "/register";
         }
 
 
         log.info("Registering customer with email: {}", userDto.getEmail());
         authenticationService.registerUser(userMapper.mapFrom(userDto));
-        log.info("Customer registered successfully");
+        log.info("User registered successfully");
         return "redirect:/register?success";
     }
 
