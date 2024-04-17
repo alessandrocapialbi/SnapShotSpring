@@ -32,6 +32,6 @@ public class TimeSlotEntity {
 
     @ManyToOne(cascade = CascadeType.ALL) // Update and Delete on CASCADE
     @JoinColumn(name = "photographerID")
-    private PhotographerEntity photographerEntity;
+    private UserEntity photographer;
 
 }

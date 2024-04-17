@@ -1,22 +1,19 @@
 package com.SWE_photoshoot_booking.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "photographers")
-public class PhotographerEntity {
+@Table(name = "users")
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long photographerID;
+    private Long userID;
 
     private String name;
 
@@ -28,11 +25,6 @@ public class PhotographerEntity {
 
     private String telephone;
 
-    private String workingPlace;
-
-    private Integer yearsOfActivity;
-
-    private String specialization;
-
+    private String role;
 
 }

@@ -20,7 +20,7 @@ public class AppointmentEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customerID")
-    private CustomerEntity customerEntity;
+    private UserEntity customer;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "photoshootID")
@@ -32,6 +32,6 @@ public class AppointmentEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "photographerID")
-    private PhotographerEntity photographerEntity;
+    private UserEntity photographer;
 
 }

@@ -1,15 +1,15 @@
 package com.SWE_photoshoot_booking.repositories;
 
-import com.SWE_photoshoot_booking.domain.dto.CustomerDto;
-import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
+import com.SWE_photoshoot_booking.domain.dto.UserDto;
+import com.SWE_photoshoot_booking.domain.entities.UserEntity;
 
 public final class TestDataUtil {
     private TestDataUtil() {
     }
 
-    public static CustomerEntity createTestCustomerA() {
-        return CustomerEntity.builder()
-                .customerID(1L)
+    public static UserEntity createTestUserA() {
+        return UserEntity.builder()
+                .userID(1L)
                 .name("Jack")
                 .surname("Sparrow")
                 .email("jack.sparrow@example.com")
@@ -17,9 +17,9 @@ public final class TestDataUtil {
                 .telephone("+393980878782").build();
     }
 
-    public static CustomerEntity createTestCustomerB() {
-        return CustomerEntity.builder()
-                .customerID(2L)
+    public static UserEntity createTestUserB() {
+        return com.SWE_photoshoot_booking.domain.entities.UserEntity.builder()
+                .userID(2L)
                 .name("Alessandro")
                 .surname("Capialbi")
                 .email("capialbi.alessandro@example.com")
@@ -27,9 +27,9 @@ public final class TestDataUtil {
                 .telephone("+3937745898744").build();
     }
 
-    public static CustomerEntity createTestCustomerC() {
-        return CustomerEntity.builder()
-                .customerID(3L)
+    public static UserEntity createTestUserC() {
+        return com.SWE_photoshoot_booking.domain.entities.UserEntity.builder()
+                .userID(3L)
                 .name("Bob")
                 .surname("King")
                 .email("bob.king@example.com")
@@ -37,9 +37,9 @@ public final class TestDataUtil {
                 .telephone("+13980878782").build();
     }
 
-    public static CustomerDto createTestCustomerDtoA() {
-        return CustomerDto.builder()
-                .customerID(1L)
+    public static UserDto createTestUserDtoA() {
+        return UserDto.builder()
+                .userID(1L)
                 .name("Jack")
                 .surname("Sparrow")
                 .email("jack.sparrow@gmail.com")

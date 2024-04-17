@@ -1,6 +1,6 @@
 package com.SWE_photoshoot_booking.domain.dto;
 
-import com.SWE_photoshoot_booking.domain.entities.PhotographerEntity;
+import com.SWE_photoshoot_booking.domain.entities.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,7 @@ public class PhotoshootDto implements IdentifiableDto {
 
     private Integer price;
 
-    private PhotographerEntity photographerEntity;
+    private UserEntity photographer;
 
 
     @Override

@@ -1,14 +1,10 @@
 package com.SWE_photoshoot_booking.controllers.auth;
 
-import com.SWE_photoshoot_booking.domain.dto.CustomerDto;
-import com.SWE_photoshoot_booking.domain.dto.PhotographerDto;
-import com.SWE_photoshoot_booking.domain.entities.CustomerEntity;
-import com.SWE_photoshoot_booking.domain.entities.PhotographerEntity;
-import com.SWE_photoshoot_booking.mappers.impl.CustomerMapper;
-import com.SWE_photoshoot_booking.mappers.impl.PhotographerMapper;
+import com.SWE_photoshoot_booking.domain.dto.UserDto;
+import com.SWE_photoshoot_booking.domain.entities.UserEntity;
+import com.SWE_photoshoot_booking.mappers.impl.UserMapper;
 import com.SWE_photoshoot_booking.services.AuthenticationService;
-import com.SWE_photoshoot_booking.services.impl.CustomerService;
-import com.SWE_photoshoot_booking.services.impl.PhotographerService;
+import com.SWE_photoshoot_booking.services.impl.UserService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,23 +19,17 @@ public class RegistrationController {
 
     private final AuthenticationService authenticationService;
 
-    private final CustomerService customerService;
+    private final UserService userService;
 
-    private final PhotographerService photographerService;
-
-    private final CustomerMapper customerMapper;
-
-    private final PhotographerMapper photographerMapper;
+    private final UserMapper userMapper;
 
     private static final Logger log = LoggerFactory.getLogger(RegistrationController.class);
 
     @Autowired
-    public RegistrationController(AuthenticationService authenticationService, CustomerService customerService, PhotographerService photographerService, CustomerMapper customerMapper, PhotographerMapper photographerMapper) {
+    public RegistrationController(AuthenticationService authenticationService, UserService userService, UserMapper userMapper) {
         this.authenticationService = authenticationService;
-        this.customerService = customerService;
-        this.photographerService = photographerService;
-        this.customerMapper = customerMapper;
-        this.photographerMapper = photographerMapper;
+        this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @GetMapping("/index")
@@ -49,17 +39,16 @@ public class RegistrationController {
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("customer", new CustomerDto());
-        model.addAttribute("photographer", new PhotographerDto());
+        model.addAttribute("customer", new UserDto());
         return "/register";
     }
 
 
-    @PostMapping("/register/customer")
-    public String registerCustomer(@Valid @ModelAttribute("customer") CustomerDto customerDto,
+    @PostMapping("/register/user")
+    public String registerCustomer(@Valid @ModelAttribute("customer") UserDto userDto,
                                    BindingResult result,
                                    Model model) {
-        CustomerEntity existingCustomer = customerService.findCustomerByEmail(customerMapper.mapFrom(customerDto).getEmail());
+        UserEntity existingCustomer = userService.findCustomerByEmail(userMapper.mapFrom(userDto).getEmail());
 
         if (existingCustomer != null && existingCustomer.getEmail() != null && !existingCustomer.getEmail().isEmpty()) {
             result.rejectValue("email", null,
@@ -67,35 +56,15 @@ public class RegistrationController {
         }
 
         if (result.hasErrors()) {
-            model.addAttribute("customer", customerDto);
+            model.addAttribute("customer", userDto);
             return "/register";
         }
 
 
-
-        log.info("Registering customer with email: {}", customerDto.getEmail());
-        authenticationService.registerCustomer(customerMapper.mapFrom(customerDto));
+        log.info("Registering customer with email: {}", userDto.getEmail());
+        authenticationService.registerUser(userMapper.mapFrom(userDto));
         log.info("Customer registered successfully");
         return "redirect:/register?success";
     }
 
-    @PostMapping("/register/photographer")
-    public String registerPhotographer(@Valid @ModelAttribute("photographer") PhotographerDto photographerDto,
-                                       BindingResult result,
-                                       Model model) {
-        PhotographerEntity existingPhotographer = photographerService.findPhotographerByEmail(photographerMapper.mapFrom(photographerDto).getEmail());
-
-        if (existingPhotographer != null && existingPhotographer.getEmail() != null && !existingPhotographer.getEmail().isEmpty()) {
-            result.rejectValue("email", null,
-                    "There is already an account registered with the same email");
-        }
-
-        if (result.hasErrors()) {
-            model.addAttribute("photographer", photographerDto);
-            return "/register";
-        }
-
-        authenticationService.registerPhotographer(photographerMapper.mapFrom(photographerDto));
-        return "redirect:/register?success";
-    }
 }
