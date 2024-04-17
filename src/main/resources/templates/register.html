@@ -10,6 +10,36 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
 </head>
+<script>
+    function showForm(role) {
+        if (role === 'customer') {
+            document.getElementById('customerForm').style.display = 'block';
+            document.getElementById('photographerForm').style.display = 'none';
+            document.getElementById('submitPhotographer').disabled = true;
+            document.getElementById('submitCustomer').disabled = false;
+        } else if (role === 'photographer') {
+            document.getElementById('customerForm').style.display = 'none';
+            document.getElementById('photographerForm').style.display = 'block';
+            document.getElementById('submitCustomer').disabled = true;
+            document.getElementById('submitPhotographer').disabled = false;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentForm = 'customer';
+        document.getElementById('customerForm').addEventListener('submit', function (event) {
+            if (currentForm !== 'customer') {
+                event.preventDefault();
+            }
+        });
+
+        document.getElementById('photographerForm').addEventListener('submit', function (event) {
+            if (currentForm !== 'photographer') {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
@@ -36,7 +66,7 @@
             </div>
             <div th:if="${param.success}">
                 <div class="alert alert-info">
-                    You have successfully registered our app!
+                    You have successfully registered!
                 </div>
             </div>
             <div class="form-group mb-3">
@@ -227,7 +257,7 @@
                             name="yearsOfActivity"
                             placeholder="Enter years of activity"
                             th:field="*{yearsOfActivity}"
-                            type="text"
+                            type="number"
                     />
                     <p th:errors="*{yearsOfActivity}" class="text-danger"
                        th:if="${#fields.hasErrors('yearsOfActivity')}"></p>
@@ -252,16 +282,8 @@
                 </div>
 
             </form>
-
         </div>
     </div>
 </div>
-</div>
-<script>
-    function showForm(role) {
-        document.getElementById('customerForm').style.display = (role === 'customer') ? 'block' : 'none';
-        document.getElementById('photographerForm').style.display = (role === 'photographer') ? 'block' : 'none';
-    }
-</script>
 </body>
 </html>

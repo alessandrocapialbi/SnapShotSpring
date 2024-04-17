@@ -51,7 +51,7 @@ public class RegistrationController {
     public String showRegistrationForm(Model model) {
         model.addAttribute("customer", new CustomerDto());
         model.addAttribute("photographer", new PhotographerDto());
-        return "register";
+        return "/register";
     }
 
 
