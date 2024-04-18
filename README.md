@@ -1,4 +1,4 @@
-# Photo Appointment Booking System
+# Photoshoot Appointment Booking System
 
 This project is a web application in Java Spring Boot for managing appointments for photographers. It allows clients to schedule appointments for photography sessions and provides admin operations for photographers to manage their appointments and given services/time slots.
 
