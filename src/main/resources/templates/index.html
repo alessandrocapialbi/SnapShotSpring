@@ -13,25 +13,17 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/index}">Sign up and Login</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/register}">Sign up</a>
-                    <a class="nav-link active" aria-current="page" th:href="@{/login}">Login</a>
-                </li>
-            </ul>
-        </div>
+        <a class="navbar-brand" th:href="@{/index}">Authentication Page</a>
     </div>
 </nav>
 <br/><br/>
 <div class="container">
     <div class="row">
         <h1 class="text-center"> Registration and Login System </h1>
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+        <a class="btn btn-primary me-2" aria-current="page" th:href="@{/register}">Sign up</a>
+        <a class="btn btn-success" aria-current="page" th:href="@{/login}">Login</a>
     </div>
 </div>
 </body>
