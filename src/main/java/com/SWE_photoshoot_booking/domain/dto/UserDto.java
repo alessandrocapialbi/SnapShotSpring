@@ -5,13 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class UserDto implements IdentifiableDto {
 
-    private Long userID;
+    private UUID userID;
 
     private String name;
 
@@ -26,7 +28,7 @@ public class UserDto implements IdentifiableDto {
     private String role;
 
     @Override
-    public void setId(Long id) {
+    public void setId(UUID id) {
         userID = id;
     }
 

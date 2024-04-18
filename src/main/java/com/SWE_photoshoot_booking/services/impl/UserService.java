@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService extends AbstractCrudService<UserEntity, UserRepository> {
@@ -17,7 +18,7 @@ public class UserService extends AbstractCrudService<UserEntity, UserRepository>
     }
 
     @Override
-    public UserEntity partialUpdate(Long id, UserEntity entity) {
+    public UserEntity partialUpdate(UUID id, UserEntity entity) {
         entity.setUserID(id);
         return getRepository().findById(id).map(existingCustomer -> {
             Optional.ofNullable(entity.getName()).ifPresent(existingCustomer::setName);

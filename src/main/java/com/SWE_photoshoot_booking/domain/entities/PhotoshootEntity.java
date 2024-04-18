@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 
 @Data
@@ -16,8 +17,7 @@ import lombok.NoArgsConstructor;
 public class PhotoshootEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long photoshootID;
+    private UUID photoshootID;
 
     private String name;
 
@@ -26,5 +26,12 @@ public class PhotoshootEntity {
     @ManyToOne(cascade = CascadeType.ALL) // Update and Delete on CASCADE
     @JoinColumn(name = "userID")
     private UserEntity photographer;
+
+    @PrePersist
+    public void generateUUID() {
+        if (photoshootID == null) {
+            photoshootID = UUID.randomUUID();
+        }
+    }
 
 }

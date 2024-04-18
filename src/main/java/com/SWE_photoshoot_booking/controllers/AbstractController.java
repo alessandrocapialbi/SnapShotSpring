@@ -10,9 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
+import java.util.UUID;
 
 
-public abstract class AbstractController<E, D extends IdentifiableDto, R extends JpaRepository<E, Long>> {
+public abstract class AbstractController<E, D extends IdentifiableDto, R extends JpaRepository<E, UUID>> {
 
     protected final AbstractCrudService<E, R> service;
     protected final Mapper<E, D> mapper;
@@ -37,7 +38,7 @@ public abstract class AbstractController<E, D extends IdentifiableDto, R extends
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<D> getRecord(@PathVariable("id") Long id) {
+    public ResponseEntity<D> getRecord(@PathVariable("id") UUID id) {
         Optional<E> foundEntity = service.findById(id);
         return foundEntity.map(E -> {
             D dto = mapper.mapTo(E);
@@ -46,7 +47,7 @@ public abstract class AbstractController<E, D extends IdentifiableDto, R extends
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<D> fullUpdateRecord(@PathVariable("id") Long id, @RequestBody D dto) {
+    public ResponseEntity<D> fullUpdateRecord(@PathVariable("id") UUID id, @RequestBody D dto) {
         if (service.doesNotExist(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -57,7 +58,7 @@ public abstract class AbstractController<E, D extends IdentifiableDto, R extends
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<D> partialUpdateRecord(@PathVariable("id") Long id, @RequestBody D dto) {
+    public ResponseEntity<D> partialUpdateRecord(@PathVariable("id") UUID id, @RequestBody D dto) {
         if (service.doesNotExist(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -67,7 +68,7 @@ public abstract class AbstractController<E, D extends IdentifiableDto, R extends
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRecord(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteRecord(@PathVariable("id") UUID id) {
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

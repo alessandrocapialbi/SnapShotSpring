@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
+import java.util.UUID;
 
 
-public abstract class AbstractCrudService<E, R extends JpaRepository<E, Long>> {
+public abstract class AbstractCrudService<E, R extends JpaRepository<E, UUID>> {
 
 
     private final R repository;
@@ -21,7 +22,7 @@ public abstract class AbstractCrudService<E, R extends JpaRepository<E, Long>> {
         return repository.save(entity);
     }
 
-    public Optional<E> findById(Long id) {
+    public Optional<E> findById(UUID id) {
         return repository.findById(id);
     }
 
@@ -29,13 +30,13 @@ public abstract class AbstractCrudService<E, R extends JpaRepository<E, Long>> {
         return repository.findAll(pageable);
     }
 
-    public abstract E partialUpdate(Long id, E entity);
+    public abstract E partialUpdate(UUID id, E entity);
 
-    public void delete(Long id) {
+    public void delete(UUID id) {
         repository.deleteById(id);
     }
 
-    public boolean doesNotExist(Long id) {
+    public boolean doesNotExist(UUID id) {
         return !repository.existsById(id);
     }
 

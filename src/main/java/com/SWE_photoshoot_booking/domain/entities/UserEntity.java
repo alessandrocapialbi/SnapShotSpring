@@ -3,6 +3,8 @@ package com.SWE_photoshoot_booking.domain.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,8 +14,7 @@ import lombok.*;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userID;
+    private UUID userID;
 
     private String name;
 
@@ -26,5 +27,12 @@ public class UserEntity {
     private String telephone;
 
     private String role;
+
+    @PrePersist
+    public void generateUUID() {
+        if (userID == null) {
+            userID = UUID.randomUUID();
+        }
+    }
 
 }

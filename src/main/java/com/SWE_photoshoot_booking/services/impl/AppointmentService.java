@@ -6,6 +6,8 @@ import com.SWE_photoshoot_booking.services.AbstractCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 
 @Service
 public class AppointmentService extends AbstractCrudService<AppointmentEntity, AppointmentRepository> {
@@ -16,7 +18,7 @@ public class AppointmentService extends AbstractCrudService<AppointmentEntity, A
     }
 
     @Override
-    public AppointmentEntity partialUpdate(Long id, AppointmentEntity entity) {
+    public AppointmentEntity partialUpdate(UUID id, AppointmentEntity entity) {
         entity.setAppointmentID(id);
         return getRepository().save(entity);
     }

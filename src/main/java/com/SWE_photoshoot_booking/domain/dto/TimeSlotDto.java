@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +15,7 @@ import java.time.LocalTime;
 @Builder
 public class TimeSlotDto implements IdentifiableDto {
 
-    private Long timeSlotID;
+    private UUID timeSlotID;
 
     private Integer dayOfWeek;
 
@@ -30,7 +31,7 @@ public class TimeSlotDto implements IdentifiableDto {
 
 
     @Override
-    public void setId(Long id) {
+    public void setId(UUID id) {
         timeSlotID = id;
     }
 }

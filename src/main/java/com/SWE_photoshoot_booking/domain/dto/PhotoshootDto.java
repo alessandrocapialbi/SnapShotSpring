@@ -6,13 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class PhotoshootDto implements IdentifiableDto {
 
-    private Long photoshootID;
+    private UUID photoshootID;
 
     private String name;
 
@@ -22,7 +24,7 @@ public class PhotoshootDto implements IdentifiableDto {
 
 
     @Override
-    public void setId(Long id) {
+    public void setId(UUID id) {
         photoshootID = id;
     }
 }

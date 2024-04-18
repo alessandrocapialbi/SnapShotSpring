@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PhotoshootService extends AbstractCrudService<PhotoshootEntity, PhotoshootRepository> {
@@ -17,7 +18,7 @@ public class PhotoshootService extends AbstractCrudService<PhotoshootEntity, Pho
     }
 
     @Override
-    public PhotoshootEntity partialUpdate(Long id, PhotoshootEntity entity) {
+    public PhotoshootEntity partialUpdate(UUID id, PhotoshootEntity entity) {
         entity.setPhotoshootID(id);
         return getRepository().findById(id).map(existingPhotoshoot -> {
             Optional.ofNullable(entity.getName()).ifPresent(existingPhotoshoot::setName);

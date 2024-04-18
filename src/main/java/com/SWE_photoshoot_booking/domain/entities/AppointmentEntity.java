@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,8 +17,7 @@ import lombok.NoArgsConstructor;
 public class AppointmentEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long appointmentID;
+    private UUID appointmentID;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customerID")
@@ -33,5 +34,12 @@ public class AppointmentEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "photographerID")
     private UserEntity photographer;
+
+    @PrePersist
+    public void generateUUID() {
+        if (appointmentID == null) {
+            appointmentID = UUID.randomUUID();
+        }
+    }
 
 }

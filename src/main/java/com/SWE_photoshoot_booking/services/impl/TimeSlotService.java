@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class TimeSlotService extends AbstractCrudService<TimeSlotEntity, TimeSlotRepository> {
@@ -17,7 +18,7 @@ public class TimeSlotService extends AbstractCrudService<TimeSlotEntity, TimeSlo
     }
 
     @Override
-    public TimeSlotEntity partialUpdate(Long id, TimeSlotEntity entity) {
+    public TimeSlotEntity partialUpdate(UUID id, TimeSlotEntity entity) {
         entity.setTimeslotID(id);
         return getRepository().findById(id).map(existingTimeSlot -> {
             Optional.ofNullable(entity.getDayOfWeek()).ifPresent(existingTimeSlot::setDayOfWeek);

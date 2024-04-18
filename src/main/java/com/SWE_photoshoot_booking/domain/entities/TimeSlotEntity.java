@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 import java.time.LocalTime;
 
 @Data
@@ -17,8 +19,7 @@ import java.time.LocalTime;
 public class TimeSlotEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long timeslotID;
+    private UUID timeslotID;
 
     private Integer dayOfWeek;
 
@@ -33,5 +34,12 @@ public class TimeSlotEntity {
     @ManyToOne(cascade = CascadeType.ALL) // Update and Delete on CASCADE
     @JoinColumn(name = "photographerID")
     private UserEntity photographer;
+
+    @PrePersist
+    public void generateUUID() {
+        if (timeslotID == null) {
+            timeslotID = UUID.randomUUID();
+        }
+    }
 
 }

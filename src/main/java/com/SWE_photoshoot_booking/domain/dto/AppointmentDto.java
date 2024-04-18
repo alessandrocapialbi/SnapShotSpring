@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AppointmentDto implements IdentifiableDto {
 
-    private Long appointmentID;
+    private UUID appointmentID;
 
     private UserEntity customer;
 
@@ -25,7 +26,7 @@ public class AppointmentDto implements IdentifiableDto {
     private UserEntity photographer;
 
     @Override
-    public void setId(Long id) {
+    public void setId(UUID id) {
         appointmentID = id;
     }
 }
