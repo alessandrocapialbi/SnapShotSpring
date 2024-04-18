@@ -36,15 +36,15 @@ public class AuthenticationService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity customer = userRepository.findByEmail(username);
-        if (customer != null) {
-            return User.withUsername(customer.getEmail())
-                    .password(customer.getPassword())
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findByEmail(email);
+        if (user != null) {
+            return User.withUsername(user.getEmail())
+                    .password(user.getPassword())
                     .roles("customer")
                     .build();
         }
 
-        throw new UsernameNotFoundException("User not found with email: " + username);
+        throw new UsernameNotFoundException("User not found with email: " + user);
     }
 }

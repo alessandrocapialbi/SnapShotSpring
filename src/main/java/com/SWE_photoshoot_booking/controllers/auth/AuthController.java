@@ -15,7 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class RegistrationController {
+public class AuthController {
 
     private final AuthenticationService authenticationService;
 
@@ -23,10 +23,10 @@ public class RegistrationController {
 
     private final UserMapper userMapper;
 
-    private static final Logger log = LoggerFactory.getLogger(RegistrationController.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
-    public RegistrationController(AuthenticationService authenticationService, UserService userService, UserMapper userMapper) {
+    public AuthController(AuthenticationService authenticationService, UserService userService, UserMapper userMapper) {
         this.authenticationService = authenticationService;
         this.userService = userService;
         this.userMapper = userMapper;
@@ -65,6 +65,11 @@ public class RegistrationController {
         authenticationService.registerUser(userMapper.mapFrom(userDto));
         log.info("User registered successfully");
         return "redirect:/register?success";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 
 }

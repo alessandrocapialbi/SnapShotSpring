@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.UUID;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +27,8 @@ public class UserEntity {
 
     private String telephone;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @PrePersist
     public void generateUUID() {

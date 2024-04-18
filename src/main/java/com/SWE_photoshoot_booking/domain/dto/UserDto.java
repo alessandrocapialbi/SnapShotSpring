@@ -1,5 +1,6 @@
 package com.SWE_photoshoot_booking.domain.dto;
 
+import com.SWE_photoshoot_booking.domain.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +26,7 @@ public class UserDto implements IdentifiableDto {
 
     private String telephone;
 
-    private String role;
+    private Role role;
 
     @Override
     public void setId(UUID id) {
