@@ -1,10 +1,14 @@
 package com.SWE_photoshoot_booking.services;
 
+import com.SWE_photoshoot_booking.domain.dto.LoginDto;
 import com.SWE_photoshoot_booking.domain.entities.UserEntity;
 import com.SWE_photoshoot_booking.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,6 +38,20 @@ public class AuthenticationService implements UserDetailsService {
         logger.info("Customer registration successful for email: {}", user.getEmail());
     }
 
+    public void loginUser(LoginDto loginDto) throws BadCredentialsException {
+        logger.info("loginUser called with email: {}", loginDto.getEmail());
+        UserDetails userDetails = loadUserByUsername(loginDto.getEmail());
+
+        if (!passwordEncoder.matches(loginDto.getPassword(), userDetails.getPassword())) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
+
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -41,7 +59,7 @@ public class AuthenticationService implements UserDetailsService {
         if (user != null) {
             return User.withUsername(user.getEmail())
                     .password(user.getPassword())
-                    .roles("customer")
+                    .roles(user.getRole().name())
                     .build();
         }
 

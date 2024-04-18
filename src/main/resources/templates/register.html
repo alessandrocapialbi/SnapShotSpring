@@ -117,8 +117,8 @@
                 <div class="form-group mb-3">
                     <label for="role">Register as:</label>
                     <select id="role" th:field="*{role}">
-                        <option value="customer">Customer</option>
-                        <option value="photographer">Photographer</option>
+                        <option value="CUSTOMER">Customer</option>
+                        <option value="PHOTOGRAPHER">Photographer</option>
                     </select>
                 </div>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>

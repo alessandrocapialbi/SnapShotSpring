@@ -1,5 +1,6 @@
 package com.SWE_photoshoot_booking.controllers.auth;
 
+import com.SWE_photoshoot_booking.domain.dto.LoginDto;
 import com.SWE_photoshoot_booking.domain.dto.UserDto;
 import com.SWE_photoshoot_booking.domain.entities.UserEntity;
 import com.SWE_photoshoot_booking.mappers.impl.UserMapper;
@@ -9,6 +10,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,6 +45,12 @@ public class AuthController {
         return "/register";
     }
 
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        model.addAttribute("login", new LoginDto());
+        return "/login";
+    }
+
 
     @PostMapping("/register/user")
     public String registerUser(@Valid @ModelAttribute("user") UserDto userDto,
@@ -61,15 +69,28 @@ public class AuthController {
         }
 
 
-        log.info("Registering customer with email: {}", userDto.getEmail());
+        log.info("Registering user with email: {}", userDto.getEmail());
         authenticationService.registerUser(userMapper.mapFrom(userDto));
         log.info("User registered successfully");
         return "redirect:/register?success";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
+    @PostMapping("/login")
+    public String loginUser(@ModelAttribute("login") LoginDto loginDto, BindingResult result) {
+        log.info("eccomi");
+        try {
+            authenticationService.loginUser(loginDto);
+        } catch (BadCredentialsException e) {
+            log.error("An error occurred during login", e);
+            result.rejectValue("password", null, "Invalid username or password");
+            return "login";
+        }
+
+        log.info("Logging user with email: {}", loginDto.getEmail());
+        log.info("User logged in successfully");
+
+        return "redirect:/index";
     }
+
 
 }
