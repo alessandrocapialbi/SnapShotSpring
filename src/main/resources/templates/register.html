@@ -49,11 +49,12 @@
                     <label class="form-label">Name</label>
                     <input
                             class="form-control"
-                            id="customerName"
+                            id="name"
                             name="name"
                             placeholder="Enter first name"
                             th:field="*{name}"
                             type="text"
+                            required
                     />
                     <p th:errors="*{name}" class="text-danger"
                        th:if="${#fields.hasErrors('name')}"></p>
@@ -63,39 +64,42 @@
                     <label class="form-label">Surname</label>
                     <input
                             class="form-control"
-                            id="customerSurname"
+                            id="surname"
                             name="surname"
                             placeholder="Enter surname"
                             th:field="*{surname}"
                             type="text"
+                            required
                     />
                     <p th:errors="*{surname}" class="text-danger"
                        th:if="${#fields.hasErrors('surname')}"></p>
                 </div>
 
                 <div class="form-group mb-3">
-                    <label class="form-label">Email</label>
+                    <label for="email" class="form-label">Email</label>
                     <input
                             class="form-control"
-                            id="customerEmail"
+                            id="email"
                             name="email"
                             placeholder="Enter email address"
                             th:field="*{email}"
                             type="email"
+                            required
                     />
                     <p th:errors="*{email}" class="text-danger"
-                       th:if="${#fields.hasErrors('email')}"></p>
+                       th:if="${#fields.hasErrors('email')}" th:errorclass="error"></p>
                 </div>
 
                 <div class="form-group mb-3">
                     <label class="form-label">Password</label>
                     <input
                             class="form-control"
-                            id="customerPassword"
+                            id="password"
                             name="password"
                             placeholder="Enter password"
                             th:field="*{password}"
                             type="password"
+                            required
                     />
                     <p th:errors="*{password}" class="text-danger"
                        th:if="${#fields.hasErrors('password')}"></p>
@@ -105,7 +109,7 @@
                     <label class="form-label">Telephone</label>
                     <input
                             class="form-control"
-                            id="customerTelephone"
+                            id="telephone"
                             name="telephone"
                             placeholder="Enter telephone"
                             th:field="*{telephone}"
