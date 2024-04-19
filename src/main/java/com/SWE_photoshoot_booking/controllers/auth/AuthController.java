@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -75,22 +74,6 @@ public class AuthController {
         return "redirect:/register?success";
     }
 
-    @PostMapping("/login")
-    public String loginUser(@ModelAttribute("login") LoginDto loginDto, BindingResult result) {
-        log.info("eccomi");
-        try {
-            authenticationService.loginUser(loginDto);
-        } catch (BadCredentialsException e) {
-            log.error("An error occurred during login", e);
-            result.rejectValue("password", null, "Invalid username or password");
-            return "login";
-        }
-
-        log.info("Logging user with email: {}", loginDto.getEmail());
-        log.info("User logged in successfully");
-
-        return "redirect:/index";
-    }
 
 
 }
