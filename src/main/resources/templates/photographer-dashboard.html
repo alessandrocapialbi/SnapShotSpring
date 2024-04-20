@@ -2,11 +2,56 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Photographer Dashboard</title>
+    <!-- Includi il CSS di Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
 
-<h1>Photographer Dashboard</h1>
+<div class="container">
+
+    <h1 class="my-4" th:text="'Welcome, ' + ${photographerName} + '!'"></h1>
+
+    <div class="row">
+        <!-- Card for the management of photoshoots -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Manage Photoshoots</h5>
+                    <p class="card-text">Create or update photoshoots.</p>
+                    <a href="/createOrUpdatePhotoshoot" class="btn btn-primary">Go to Photoshoots</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card for the management of time slots -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Manage Time Slots</h5>
+                    <p class="card-text">Manage your available time slots.</p>
+                    <a href="/manageTimeSlots" class="btn btn-primary">Go to Time Slots</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card for the management of customers and their bookings -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">View Clients</h5>
+                    <p class="card-text">View your clients and their bookings.</p>
+                    <a href="/viewClients" class="btn btn-primary">Go to Clients</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Includi il JavaScript di Bootstrap e le sue dipendenze -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
