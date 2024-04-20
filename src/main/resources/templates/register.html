@@ -125,6 +125,7 @@
                         <option value="PHOTOGRAPHER">Photographer</option>
                     </select>
                 </div>
+                <!-- Include the CSRF token -->
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit">Register</button>

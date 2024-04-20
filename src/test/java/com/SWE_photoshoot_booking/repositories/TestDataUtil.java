@@ -3,13 +3,15 @@ package com.SWE_photoshoot_booking.repositories;
 import com.SWE_photoshoot_booking.domain.dto.UserDto;
 import com.SWE_photoshoot_booking.domain.entities.UserEntity;
 
+import java.util.UUID;
+
 public final class TestDataUtil {
     private TestDataUtil() {
     }
 
     public static UserEntity createTestUserA() {
         return UserEntity.builder()
-                .userID(1L)
+                .userID(UUID.randomUUID())
                 .name("Jack")
                 .surname("Sparrow")
                 .email("jack.sparrow@example.com")
@@ -19,7 +21,7 @@ public final class TestDataUtil {
 
     public static UserEntity createTestUserB() {
         return com.SWE_photoshoot_booking.domain.entities.UserEntity.builder()
-                .userID(2L)
+                .userID(UUID.randomUUID())
                 .name("Alessandro")
                 .surname("Capialbi")
                 .email("capialbi.alessandro@example.com")
@@ -29,7 +31,7 @@ public final class TestDataUtil {
 
     public static UserEntity createTestUserC() {
         return com.SWE_photoshoot_booking.domain.entities.UserEntity.builder()
-                .userID(3L)
+                .userID(UUID.randomUUID())
                 .name("Bob")
                 .surname("King")
                 .email("bob.king@example.com")
@@ -39,7 +41,7 @@ public final class TestDataUtil {
 
     public static UserDto createTestUserDtoA() {
         return UserDto.builder()
-                .userID(1L)
+                .userID(UUID.randomUUID())
                 .name("Jack")
                 .surname("Sparrow")
                 .email("jack.sparrow@gmail.com")

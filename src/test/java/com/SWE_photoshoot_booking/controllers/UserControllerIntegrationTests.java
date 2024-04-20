@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.UUID;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @SpringBootTest
@@ -66,7 +68,7 @@ public class UserControllerIntegrationTests {
                                 .with(csrf())
                                 .content(customerJSON))
                 .andExpect(
-                        MockMvcResultMatchers.jsonPath("$.userID").isNumber()).
+                        MockMvcResultMatchers.jsonPath("$.userID").isString()).
                 andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Jack"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value("Sparrow"));
 
@@ -89,7 +91,7 @@ public class UserControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(
-                        MockMvcResultMatchers.jsonPath("$.content[0].userID").isNumber()).
+                        MockMvcResultMatchers.jsonPath("$.content[0].userID").isString()).
                 andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("Jack"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].surname").value("Sparrow"));
     }
@@ -98,8 +100,8 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatGetUserReturnsHttpStatus200WhenUserExist() throws Exception {
         UserEntity testUserEntityA = TestDataUtil.createTestUserA();
-        userService.save(testUserEntityA);
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/1")
+        UserEntity savedUser = userService.save(testUserEntityA);
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/" + savedUser.getUserID().toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -109,8 +111,7 @@ public class UserControllerIntegrationTests {
     @Test
     public void testThatGetUserReturnsHttpStatus404WhenNoUserExist() throws Exception {
         UserEntity testUserEntityA = TestDataUtil.createTestUserA();
-        userService.save(testUserEntityA);
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/99")
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/" + UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -120,7 +121,7 @@ public class UserControllerIntegrationTests {
     public void testThatFullUpdateUserReturnsHttpStatus404WhenUserNotExists() throws Exception {
         UserDto testUserDtoA = TestDataUtil.createTestUserDtoA();
         String customerDtoJson = objectMapper.writeValueAsString(testUserDtoA);
-        mockMvc.perform(MockMvcRequestBuilders.put("/users/99")
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/" + UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                         .content(customerDtoJson))
@@ -148,12 +149,12 @@ public class UserControllerIntegrationTests {
         customerDto.setUserID(savedCustomer.getUserID());
         String customerDtoUpdateJson = objectMapper.writeValueAsString(customerDto);
         objectMapper.writeValueAsString(customerDto);
-        mockMvc.perform(MockMvcRequestBuilders.put("/users/" + savedCustomer.getUserID())
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/" + savedCustomer.getUserID().toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                         .content(customerDtoUpdateJson))
                 .andExpect(
-                        MockMvcResultMatchers.jsonPath("$.userID").value(savedCustomer.getUserID())).
+                        MockMvcResultMatchers.jsonPath("$.userID").value(savedCustomer.getUserID().toString())).
                 andExpect(MockMvcResultMatchers.jsonPath("$.name").value(customerDto.getName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value(customerDto.getSurname()));
     }
@@ -182,12 +183,12 @@ public class UserControllerIntegrationTests {
         UserDto testUserDtoA = TestDataUtil.createTestUserDtoA();
         testUserDtoA.setName("UPDATED");
         String customerDtoJson = objectMapper.writeValueAsString(testUserDtoA);
-        mockMvc.perform(MockMvcRequestBuilders.patch("/users/" + savedCustomer.getUserID())
+        mockMvc.perform(MockMvcRequestBuilders.patch("/users/" + savedCustomer.getUserID().toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                         .content(customerDtoJson))
                 .andExpect(
-                        MockMvcResultMatchers.jsonPath("$.userID").value(savedCustomer.getUserID())).
+                        MockMvcResultMatchers.jsonPath("$.userID").value(savedCustomer.getUserID().toString())).
                 andExpect(MockMvcResultMatchers.jsonPath("$.name").value("UPDATED"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.surname").value(testUserDtoA.getSurname()));
 
@@ -196,7 +197,7 @@ public class UserControllerIntegrationTests {
 
     @Test
     public void testThatDeleteUserReturnsHttpStatus204ForNonExistingUser() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/users/99")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/users/" + UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());

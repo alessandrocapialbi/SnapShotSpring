@@ -1,5 +1,7 @@
 package com.SWE_photoshoot_booking.services;
 
+import com.SWE_photoshoot_booking.domain.entities.UserEntity;
+import com.SWE_photoshoot_booking.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -38,6 +40,10 @@ public abstract class AbstractCrudService<E, R extends JpaRepository<E, UUID>> {
 
     public boolean doesNotExist(UUID id) {
         return !repository.existsById(id);
+    }
+
+    public UserEntity findByEmail(String email) {
+        return ((UserRepository) repository).findByEmail(email);
     }
 
     protected R getRepository() {
