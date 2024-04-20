@@ -11,77 +11,162 @@
 
     <h1 class="my-4">Manage Photoshoots</h1>
 
-    <!-- Form for creating a new photoshoot -->
-    <form th:action="@{/createPhotoshoot}" th:object="${photoshoot}" method="post">
-        <!-- Add fields for the photoshoot details -->
-        <input type="text" th:field="*{name}" placeholder="Name">
-        <input type="text" th:field="*{price}" placeholder="Price">
+    <!-- Modal for creating a new photoshoot -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New Photoshoot</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for creating a new photoshoot -->
+                    <form th:action="@{/photoshoots}" th:object="${photoshoot}" method="post">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" th:field="*{name}" placeholder="Name" class="form-control" id="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <input type="text" th:field="*{price}" placeholder="Price" class="form-control" id="price">
+                        </div>
 
-        <!-- Include the CSRF token -->
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <!-- Include the CSRF token -->
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <button type="submit" class="btn btn-primary">Create Photoshoot</button>
-    </form>
+    <!-- Modal for editing a photoshoot -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Photoshoot</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for editing a photoshoot -->
+                    <form id="editForm" th:action="@{/create}" method="post">
+                        <div class="form-group">
+                            <label for="editName">Name</label>
+                            <input type="text" id="editName" name="name" placeholder="Name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editPrice">Price</label>
+                            <input type="text" id="editPrice" name="price" placeholder="Price" class="form-control">
+                        </div>
+
+                        <!-- Include the CSRF token -->
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" id="editId" name="id">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Table for displaying existing photoshoots -->
     <table class="table">
         <thead>
         <tr>
-            <!-- Replace 'Field' with the actual field names -->
             <th scope="col">Name</th>
-            <!-- Add more columns as necessary -->
             <th scope="col">Price</th>
+            <th scope="col">
+                <!-- Button trigger modal for creating a new photoshoot -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    +
+                </button>
+            </th>
         </tr>
         </thead>
         <tbody>
         <!-- Iterate over the photoshoots and display their details -->
         <tr th:each="photoshoot : ${photoshoots.content}">
-            <!-- Replace 'photoshoot.field' with the actual field names -->
-            <td th:text="${photoshoot.name}"></td>
-            <!-- Add more cells as necessary -->
+            <td th:text="${photoshoot.name}" class="name"></td>
+            <td th:text="${photoshoot.price}" class="price"></td>
             <td>
-                <!-- Link for editing the photoshoot -->
-                <a th:href="@{'/editPhotoshoot/' + ${photoshoot.photoshootID}}" class="btn btn-primary">Edit</a>
-                <!-- Form for deleting the photoshoot -->
-                <form th:action="@{'/deletePhotoshoot/' + ${photoshoot.photoshootID}}" method="post"
-                      style="display: inline;">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
+                <!-- Button for editing the photoshoot -->
+                <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#editModal"
+                        th:data-photoshoot-id="${photoshoot.photoshootID}">Edit
+                </button>
+                <button type="button" class="btn btn-danger delete-button"
+                        th:data-photoshoot-id="${photoshoot.photoshootID}">Delete
+                </button>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <!-- Pagination controls -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item" th:classappend="${photoshoots.first} ? 'disabled' : ''">
-                <a class="page-link" th:href="@{/managePhotoshoots?page=0&size=${photoshoots.size}}">First</a>
-            </li>
-            <li class="page-item" th:classappend="${photoshoots.first} ? 'disabled' : ''">
-                <a class="page-link"
-                   th:href="${!photoshoots.first} ? @{/managePhotoshoots?page=${photoshoots.number-1}&size=${photoshoots.size}} : '#'"
-                   th:class="${photoshoots.first} ? 'disabled' : ''">Previous</a>
-            </li>
-            <li class="page-item disabled">
-                <a class="page-link">Page <span th:text="${photoshoots.number + 1}"></span> of <span
-                        th:text="${photoshoots.totalPages}"></span></a>
-            </li>
-            <li class="page-item" th:classappend="${photoshoots.last} ? 'disabled' : ''">
-                <a class="page-link"
-                   th:href="@{/managePhotoshoots?page=${photoshoots.number+1}&size=${photoshoots.size}}">Next</a>
-            </li>
-            <li class="page-item" th:classappend="${photoshoots.last} ? 'disabled' : ''">
-                <a class="page-link"
-                   th:href="@{/managePhotoshoots?page=${photoshoots.totalPages-1}&size=${photoshoots.size}}">Last</a>
-            </li>
-        </ul>
-    </nav>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.edit-button').on('click', function () {
+                var row = $(this).closest('tr');
+                var name = row.find('.name').text();
+                var price = row.find('.price').text();
+                var id = $(this).data('photoshoot-id');
 
+                $('#editName').val(name);
+                $('#editPrice').val(price);
+                $('#editId').val(id);
+
+                $('#editForm').attr('action', '/editPhotoshoot/' + id);
+            });
+        });
+
+
+        $(document).on('click', '.delete-button', function (e) {
+            e.preventDefault();
+            var photoshootId = $(this).data('photoshoot-id');
+            $.ajax({
+                url: '/photoshoots/' + photoshootId,
+                type: 'DELETE',
+                success: function (result) {
+                    // Do something with the result
+                    location.reload(); // Reload the page to see the changes
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('.edit-button').on('click', function () {
+                var id = $(this).data('photoshoot-id');
+                var name = $('#editName').val();
+                var price = $('#editPrice').val();
+
+                $.ajax({
+                    url: '/photoshoots/' + id,
+                    type: 'PUT',
+                    data: {
+                        name: name,
+                        price: price
+                    },
+                    success: function (result) {
+                        // Do something with the result
+                        location.reload(); // Reload the page to see the changes
+                    }
+                });
+            });
+        });
+    </script>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

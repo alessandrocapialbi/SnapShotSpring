@@ -110,7 +110,6 @@ public class UserControllerIntegrationTests {
 
     @Test
     public void testThatGetUserReturnsHttpStatus404WhenNoUserExist() throws Exception {
-        UserEntity testUserEntityA = TestDataUtil.createTestUserA();
         mockMvc.perform(MockMvcRequestBuilders.get("/users/" + UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))

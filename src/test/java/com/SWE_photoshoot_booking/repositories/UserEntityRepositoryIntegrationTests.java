@@ -71,7 +71,6 @@ public class UserEntityRepositoryIntegrationTests {
         UserEntity userEntityA = TestDataUtil.createTestUserA();
         underTest.save(userEntityA);
         underTest.deleteById(userEntityA.getUserID());
-        underTest.save(userEntityA);
         Optional<UserEntity> result = underTest.findById(userEntityA.getUserID());
         assertThat(result).isEmpty();
     }

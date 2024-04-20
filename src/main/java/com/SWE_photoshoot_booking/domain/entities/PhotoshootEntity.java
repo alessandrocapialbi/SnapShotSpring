@@ -23,7 +23,7 @@ public class PhotoshootEntity {
 
     private Integer price;
 
-    @ManyToOne(cascade = CascadeType.ALL) // Update and Delete on CASCADE
+    @ManyToOne
     @JoinColumn(name = "userID")
     private UserEntity photographer;
 

@@ -69,7 +69,7 @@ public abstract class AbstractController<E, D extends IdentifiableDto, R extends
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRecord(@PathVariable("id") UUID id) {
-        service.delete(id);
+        service.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

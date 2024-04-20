@@ -34,7 +34,7 @@ public abstract class AbstractCrudService<E, R extends JpaRepository<E, UUID>> {
 
     public abstract E partialUpdate(UUID id, E entity);
 
-    public void delete(UUID id) {
+    public void deleteById(UUID id) {
         repository.deleteById(id);
     }
 

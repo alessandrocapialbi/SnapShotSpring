@@ -19,19 +19,19 @@ public class AppointmentEntity {
     @Id
     private UUID appointmentID;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "customerID")
     private UserEntity customer;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "photoshootID")
     private PhotoshootEntity photoshootEntity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "timeslotID")
     private TimeSlotEntity timeslot;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "photographerID")
     private UserEntity photographer;
 

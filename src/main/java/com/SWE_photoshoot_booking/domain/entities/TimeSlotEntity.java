@@ -31,7 +31,7 @@ public class TimeSlotEntity {
 
     private boolean booked;
 
-    @ManyToOne(cascade = CascadeType.ALL) // Update and Delete on CASCADE
+    @ManyToOne
     @JoinColumn(name = "photographerID")
     private UserEntity photographer;
 
