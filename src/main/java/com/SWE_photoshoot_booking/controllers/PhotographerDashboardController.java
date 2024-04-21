@@ -1,20 +1,20 @@
 package com.SWE_photoshoot_booking.controllers;
 
+import com.SWE_photoshoot_booking.domain.dto.PhotoshootDto;
 import com.SWE_photoshoot_booking.domain.entities.PhotoshootEntity;
 import com.SWE_photoshoot_booking.services.impl.PhotoshootService;
 import com.SWE_photoshoot_booking.services.impl.UserService;
-import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import com.SWE_photoshoot_booking.domain.entities.UserEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Optional;
-import java.util.UUID;
+
 
 @Controller
 public class PhotographerDashboardController {
@@ -22,6 +22,8 @@ public class PhotographerDashboardController {
     private final UserService userService;
 
     private final PhotoshootService photoshootService;
+
+    private static final Logger logger = LoggerFactory.getLogger(PhotographerDashboardController.class);
 
     public PhotographerDashboardController(UserService userService, PhotoshootService photoshootService) {
         this.userService = userService;
@@ -36,10 +38,13 @@ public class PhotographerDashboardController {
     }
 
     @GetMapping("/manage-photoshoots")
-    public String showManagePhotoshootsPage(Model model, Pageable pageable) {
+    public String showManagePhotoshootsPage(Model model, Pageable pageable, Principal principal) {
         Page<PhotoshootEntity> photoshoots = photoshootService.findAll(pageable);
         model.addAttribute("photoshoots", photoshoots);
-        PhotoshootEntity photoshoot = new PhotoshootEntity();
+        PhotoshootDto photoshoot = new PhotoshootDto();
+        UserEntity photographer = userService.findByEmail(principal.getName());
+        logger.info("Photographer: {}", photographer.getUserID());
+        photoshoot.setPhotographer(photographer.getUserID());
         model.addAttribute("photoshoot", photoshoot);
         return "manage-photoshoots";
     }

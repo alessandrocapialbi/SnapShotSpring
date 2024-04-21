@@ -13,6 +13,7 @@ public class MapperConfig {
      * ModelMapper bean
      * Map entities to DTOs and vice versa
      * Handles nested objects and their cascade operations
+     *
      * @return ModelMapper
      */
     @Bean

@@ -18,4 +18,6 @@ public class PhotoshootController extends AbstractController<PhotoshootEntity, P
     public PhotoshootController(PhotoshootService photoshootService, Mapper<PhotoshootEntity, PhotoshootDto> photoshootMapper) {
         super(photoshootService, photoshootMapper);
     }
+
+
 }
