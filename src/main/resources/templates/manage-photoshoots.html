@@ -59,7 +59,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- Form for editing a photoshoot -->
-                    <form id="editForm" th:action="@{/create}" method="post">
+                    <form id="editForm">
                         <div class="form-group">
                             <label for="editName">Name</label>
                             <input type="text" id="editName" name="name" placeholder="Name" class="form-control">
@@ -116,16 +116,17 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var photographerID = $('#photographerId').val();
+
         $(document).ready(function () {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
 
             $('#createForm').on('submit', function (e) {
                 e.preventDefault();
 
                 var name = $('#name').val();
                 var price = $('#price').val();
-                var photographerID = $('#photographerId').val();
 
 
                 console.log(JSON.stringify({
@@ -150,7 +151,7 @@
                         xhr.setRequestHeader(header, token);
                     },
                     success: function (response) {
-                       window.location.href = "/manage-photoshoots";
+                        window.location.href = "/manage-photoshoots";
                     },
                     error: function (error) {
                         console.log(error);
@@ -159,28 +160,51 @@
             });
         });
 
+        $(document).on('click', '.edit-button', function (e) {
+            e.preventDefault();
+
+            // Ottieni l'ID del photoshoot e i valori correnti
+            var photoshootId = $(this).data('photoshoot-id');
+            var name = $(this).closest('tr').find('.name').text();
+            var price = $(this).closest('tr').find('.price').text();
+
+            // Imposta i valori nel form di modifica
+            $('#editId').val(photoshootId);
+            $('#editName').val(name);
+            $('#editPrice').val(price);
+
+            // Mostra il form di modifica
+            $('#editModal').modal('show');
+        });
+
 
         $(document).ready(function () {
-            $('.edit-button').on('click', function () {
-                var row = $(this).closest('tr');
-                var name = row.find('.name').text();
-                var price = row.find('.price').text();
-                var id = $(this).data('photoshoot-id');
+            $('#editForm').on('submit', function (e) {
+                e.preventDefault();
 
-                $('#editName').val(name);
-                $('#editPrice').val(price);
-                $('#editId').val(id);
+                var name = $('#editName').val();
+                var price = $('#editPrice').val();
+                var photoshootId = $('#editId').val();
+
+                console.log(photoshootId);
 
                 $.ajax({
-                    url: '/photoshoots/' + id,
-                    type: 'PUT',
-                    data: {
+                    url: '/photoshoots/' + photoshootId,
+                    type: 'PATCH',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
                         name: name,
-                        price: price
+                        price: price,
+                        photographer: photographerID
+                    }),
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
                     },
-                    success: function (result) {
-                        // Do something with the result
-                        location.reload(); // Reload the page to see the changes
+                    success: function (response) {
+                        window.location.href = "/manage-photoshoots";
+                    },
+                    error: function (error) {
+                        console.log(error);
                     }
                 });
             });
