@@ -6,6 +6,8 @@ import com.SWE_photoshoot_booking.services.AbstractCrudService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,6 +32,11 @@ public class PhotoshootService extends AbstractCrudService<PhotoshootEntity, Pho
             Optional.ofNullable(entity.getPrice()).ifPresent(existingPhotoshoot::setPrice);
             return getRepository().save(existingPhotoshoot);
         }).orElseThrow(() -> new RuntimeException("Photoshoot not exists"));
+    }
+
+    @Override
+    public Page<PhotoshootEntity> findAllById(UUID photographerId, Pageable pageable) {
+        return getRepository().findAllByPhotographer_userID(photographerId, pageable);
     }
 
 }

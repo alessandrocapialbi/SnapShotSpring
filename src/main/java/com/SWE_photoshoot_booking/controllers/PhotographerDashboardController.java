@@ -6,6 +6,7 @@ import com.SWE_photoshoot_booking.services.impl.PhotoshootService;
 import com.SWE_photoshoot_booking.services.impl.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ public class PhotographerDashboardController {
 
     private static final Logger logger = LoggerFactory.getLogger(PhotographerDashboardController.class);
 
+    @Autowired
     public PhotographerDashboardController(UserService userService, PhotoshootService photoshootService) {
         this.userService = userService;
         this.photoshootService = photoshootService;
@@ -39,10 +41,10 @@ public class PhotographerDashboardController {
 
     @GetMapping("/manage-photoshoots")
     public String showManagePhotoshootsPage(Model model, Pageable pageable, Principal principal) {
-        Page<PhotoshootEntity> photoshoots = photoshootService.findAll(pageable);
+        UserEntity photographer = userService.findByEmail(principal.getName());
+        Page<PhotoshootEntity> photoshoots = photoshootService.findAllById(photographer.getUserID(), pageable);
         model.addAttribute("photoshoots", photoshoots);
         PhotoshootDto photoshoot = new PhotoshootDto();
-        UserEntity photographer = userService.findByEmail(principal.getName());
         logger.info("Photographer: {}", photographer.getUserID());
         photoshoot.setPhotographer(photographer.getUserID());
         model.addAttribute("photoshoot", photoshoot);

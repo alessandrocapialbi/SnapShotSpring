@@ -38,6 +38,10 @@ public abstract class AbstractCrudService<E, R extends JpaRepository<E, UUID>> {
         repository.deleteById(id);
     }
 
+    public Page<E> findAllById(UUID id, Pageable pageable) {
+        return null;
+    }
+
     public boolean doesNotExist(UUID id) {
         return !repository.existsById(id);
     }

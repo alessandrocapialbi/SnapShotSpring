@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+
 @RequestMapping("/photoshoots")
 public class PhotoshootController extends AbstractController<PhotoshootEntity, PhotoshootDto, PhotoshootRepository> {
 

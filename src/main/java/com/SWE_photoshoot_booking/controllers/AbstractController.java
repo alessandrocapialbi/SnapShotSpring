@@ -62,7 +62,7 @@ public abstract class AbstractController<E, D extends IdentifiableDto, R extends
     public ResponseEntity<D> partialUpdateRecord(@PathVariable("id") UUID id, @RequestBody D dto) {
         if (service.doesNotExist(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    }
         E entity = mapper.mapFrom(dto);
         E updatedEntity = service.partialUpdate(id, entity);
         return new ResponseEntity<>(mapper.mapTo(updatedEntity), HttpStatus.OK);

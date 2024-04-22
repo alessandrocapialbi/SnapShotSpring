@@ -9,9 +9,27 @@
 </head>
 <body>
 
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Photoshoots Management</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/photographer-dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
 <div class="container">
 
-    <h1 class="my-4">Manage Photoshoots</h1>
+    <h1 class="my-4">Photoshoots</h1>
 
     <!-- Modal for creating a new photoshoot -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -217,9 +235,14 @@
             $.ajax({
                 url: '/photoshoots/' + photoshootId,
                 type: 'DELETE',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
                 success: function (result) {
-                    // Do something with the result
                     location.reload(); // Reload the page to see the changes
+                },
+                error: function (error) {
+                    console.log(error);
                 }
             });
         });
