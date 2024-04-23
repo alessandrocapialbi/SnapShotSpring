@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Manage Timeslots</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Timeslots Management</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/photographer-dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+
+    <h1 class="my-4">Timeslots</h1>
+
+    <!-- Modal for creating a new timeslot -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New Time Slot</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for creating a new timeslot -->
+                    <form id="createForm" th:action="@{/timeslots}" th:object="${timeslot}" method="post">
+                        <div class="form-group">
+                            <label for="dayOfWeek">Day Of Week</label>
+                            <input type="number" th:field="*{dayOfWeek}" placeholder="Day Of Week" class="form-control"
+                                   id="dayOfWeek">
+                        </div>
+                        <div class="form-group">
+                            <label for="startTime">Start Time</label>
+                            <input type="time" th:field="*{startTime}" placeholder="Start Time" class="form-control"
+                                   id="startTime">
+                        </div>
+                        <div class="form-group">
+                            <label for="endTime">End Time</label>
+                            <input type="time" th:field="*{endTime}" placeholder="End Time" class="form-control"
+                                   id="endTime">
+                        </div>
+                        <input type="hidden" id="photographerId" th:field="*{photographer}"/>
+                        <input type="hidden" id="booked" th:field="*{booked}"/>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Table for displaying existing timeslots -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Day Of Week</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">
+                <!-- Button trigger modal for creating a new timeslot -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    +
+                </button>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iterate over the timeslots and display their details -->
+        <tr th:each="timeslot : ${timeslots.content}">
+            <td th:text="${timeslot.dayOfWeek}" class="dayOfWeek"></td>
+            <td th:text="${timeslot.startTime}" class="startTime"></td>
+            <td th:text="${timeslot.endTime}" class="endTime"></td>
+            <td>
+                <!-- Button for editing the timeslot -->
+                <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#editModal"
+                        th:data-timeslot-id="${timeslot.timeslotID}">Edit
+                </button>
+                <button type="button" class="btn btn-danger delete-button"
+                        th:data-timeslot-id="${timeslot.timeslotID}">Delete
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var photographerID = $('#photographerId').val();
+
+        $(document).ready(function () {
+
+            $('#createForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var dayOfWeek = $('#dayOfWeek').val();
+                var startTime = $('#startTime').val();
+                var endTime = $('#endTime').val();
+                var notes = $('#notes').val();
+                var booked = $('#booked').val();
+
+                console.log(JSON.stringify({
+                    dayOfWeek: dayOfWeek,
+                    startTime: startTime,
+                    endTime: endTime,
+                    notes: notes,
+                    booked: booked,
+                    photographer: photographerID
+                }));
+                console.log(photographerID);
+                console.log(token);
+                console.log(header);
+
+                $.ajax({
+                    url: '/timeslots',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        dayOfWeek: parseInt(dayOfWeek),
+                        startTime: startTime,
+                        endTime: endTime,
+                        notes: notes,
+                        booked: booked,
+                        photographer: photographerID
+                    }),
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function (response) {
+                        $('#exampleModal').modal('hide');
+                        window.location.href = "/manage-timeslots";
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+
+
+    </script>
+</div>
+</body>
+</html>

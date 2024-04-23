@@ -1,6 +1,6 @@
 package com.SWE_photoshoot_booking.domain.dto;
 
-import com.SWE_photoshoot_booking.domain.entities.UserEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,15 +19,17 @@ public class TimeSlotDto implements IdentifiableDto {
 
     private Integer dayOfWeek;
 
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime startTime;
 
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime endTime;
 
     private String notes;
 
     private boolean booked;
 
-    private UserEntity photographer;
+    private UUID photographer;
 
 
     @Override

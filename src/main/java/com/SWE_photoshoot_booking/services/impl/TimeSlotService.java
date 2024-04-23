@@ -4,6 +4,8 @@ import com.SWE_photoshoot_booking.domain.entities.TimeSlotEntity;
 import com.SWE_photoshoot_booking.repositories.TimeSlotRepository;
 import com.SWE_photoshoot_booking.services.AbstractCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,4 +32,8 @@ public class TimeSlotService extends AbstractCrudService<TimeSlotEntity, TimeSlo
         }).orElseThrow(() -> new RuntimeException("Time Slot not exists"));
     }
 
+    @Override
+    public Page<TimeSlotEntity> findAllById(UUID id, Pageable pageable) {
+        return getRepository().findAllByPhotographer_userID(id, pageable);
+    }
 }

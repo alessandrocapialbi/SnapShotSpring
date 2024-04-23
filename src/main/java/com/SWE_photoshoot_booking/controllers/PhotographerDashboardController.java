@@ -1,8 +1,11 @@
 package com.SWE_photoshoot_booking.controllers;
 
 import com.SWE_photoshoot_booking.domain.dto.PhotoshootDto;
+import com.SWE_photoshoot_booking.domain.dto.TimeSlotDto;
 import com.SWE_photoshoot_booking.domain.entities.PhotoshootEntity;
+import com.SWE_photoshoot_booking.domain.entities.TimeSlotEntity;
 import com.SWE_photoshoot_booking.services.impl.PhotoshootService;
+import com.SWE_photoshoot_booking.services.impl.TimeSlotService;
 import com.SWE_photoshoot_booking.services.impl.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +27,15 @@ public class PhotographerDashboardController {
 
     private final PhotoshootService photoshootService;
 
+    private final TimeSlotService timeSlotService;
+
     private static final Logger logger = LoggerFactory.getLogger(PhotographerDashboardController.class);
 
     @Autowired
-    public PhotographerDashboardController(UserService userService, PhotoshootService photoshootService) {
+    public PhotographerDashboardController(UserService userService, PhotoshootService photoshootService, TimeSlotService timeSlotService) {
         this.userService = userService;
         this.photoshootService = photoshootService;
+        this.timeSlotService = timeSlotService;
     }
 
     @GetMapping("/photographer-dashboard")
@@ -49,6 +55,19 @@ public class PhotographerDashboardController {
         photoshoot.setPhotographer(photographer.getUserID());
         model.addAttribute("photoshoot", photoshoot);
         return "manage-photoshoots";
+    }
+
+    @GetMapping("/manage-timeslots")
+    public String showManageTimeslotsPage(Model model, Pageable pageable, Principal principal) {
+        logger.info("Showing manage timeslots page");
+        UserEntity photographer = userService.findByEmail(principal.getName());
+        Page<TimeSlotEntity> timeslots = timeSlotService.findAllById(photographer.getUserID(), pageable);
+        model.addAttribute("timeslots", timeslots);
+        TimeSlotDto timeslot = new TimeSlotDto();
+        timeslot.setPhotographer(photographer.getUserID());
+        timeslot.setBooked(false);
+        model.addAttribute("timeslot", timeslot);
+        return "manage-timeslots";
     }
 
 }
