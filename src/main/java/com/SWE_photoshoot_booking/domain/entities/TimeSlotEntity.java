@@ -27,8 +27,6 @@ public class TimeSlotEntity {
 
     private LocalTime endTime;
 
-    private String notes;
-
     private boolean booked;
 
     @ManyToOne

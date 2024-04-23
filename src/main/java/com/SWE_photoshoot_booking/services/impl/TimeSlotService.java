@@ -26,7 +26,6 @@ public class TimeSlotService extends AbstractCrudService<TimeSlotEntity, TimeSlo
             Optional.ofNullable(entity.getDayOfWeek()).ifPresent(existingTimeSlot::setDayOfWeek);
             Optional.ofNullable(entity.getStartTime()).ifPresent(existingTimeSlot::setStartTime);
             Optional.ofNullable(entity.getEndTime()).ifPresent(existingTimeSlot::setEndTime);
-            Optional.ofNullable(entity.getNotes()).ifPresent(existingTimeSlot::setNotes);
             Optional.of(entity.isBooked()).ifPresent(existingTimeSlot::setBooked);
             return getRepository().save(existingTimeSlot);
         }).orElseThrow(() -> new RuntimeException("Time Slot not exists"));

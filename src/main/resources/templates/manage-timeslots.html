@@ -74,6 +74,48 @@
     </div>
 
 
+    <!-- Modal for editing a new timeslot -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">New Time Slot</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for creating a new timeslot -->
+                    <form id="editForm" th:action="@{/timeslots}" th:object="${timeslot}" method="post">
+                        <div class="form-group">
+                            <label for="editDayOfWeek">Day Of Week</label>
+                            <input type="number" th:field="*{dayOfWeek}" placeholder="Day Of Week" class="form-control"
+                                   id="editDayOfWeek">
+                        </div>
+                        <div class="form-group">
+                            <label for="editStartTime">Start Time</label>
+                            <input type="time" th:field="*{startTime}" placeholder="Start Time" class="form-control"
+                                   id="editStartTime">
+                        </div>
+                        <div class="form-group">
+                            <label for="editEndTime">End Time</label>
+                            <input type="time" th:field="*{endTime}" placeholder="End Time" class="form-control"
+                                   id="editEndTime">
+                        </div>
+                        <input type="hidden" id="editId" name="id">
+                        <input type="hidden" id="ediBooked" name="booked">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Table for displaying existing timeslots -->
     <table class="table">
         <thead>
@@ -162,6 +204,80 @@
                         console.log(error);
                     }
                 });
+            });
+        });
+
+
+        $(document).on('click', '.edit-button', function (e) {
+            e.preventDefault();
+
+            var timeslotID = $(this).data('timeslot-id');
+            var dayOfWeek = $(this).closest('tr').find('.dayOfWeek').text();
+            var startTime = $(this).closest('tr').find('.startTime').text();
+            var endTime = $(this).closest('tr').find('.endTime').text();
+
+            $('#editId').val(timeslotID);
+            $('#editDayOfWeek').val(dayOfWeek);
+            $('#editStartTime').val(startTime);
+            $('#editEndTime').val(endTime);
+
+            $('#editModal').modal('show');
+        });
+
+
+        $(document).ready(function () {
+            $('#editForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var timeslotID = $('#editId').val();
+                var dayOfWeek = $('#editDayOfWeek').val();
+                var startTime = $('#editStartTime').val();
+                var endTime = $('#editEndTime').val();
+                var booked = $('#editBooked').val();
+
+
+                console.log(timeslotID);
+
+                $.ajax({
+                    url: '/timeslots/' + timeslotID,
+                    type: 'PATCH',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        dayOfWeek: parseInt(dayOfWeek),
+                        startTime: startTime,
+                        endTime: endTime,
+                        booked: booked,
+                        photographer: photographerID
+                    }),
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function (response) {
+                        $('#exampleModal').modal('hide');
+                        window.location.href = "/manage-timeslots";
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+        });
+
+        $(document).on('click', '.delete-button', function (e) {
+            e.preventDefault();
+            var timeslotID = $(this).data('timeslot-id');
+            $.ajax({
+                url: '/timeslots/' + timeslotID,
+                type: 'DELETE',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (result) {
+                    location.reload(); // Reload the page to see the changes
+                },
+                error: function (error) {
+                    console.log(error);
+                }
             });
         });
 

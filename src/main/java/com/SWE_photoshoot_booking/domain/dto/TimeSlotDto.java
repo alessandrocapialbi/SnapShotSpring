@@ -25,8 +25,6 @@ public class TimeSlotDto implements IdentifiableDto {
     @JsonFormat(pattern = "HH:mm")
     private LocalTime endTime;
 
-    private String notes;
-
     private boolean booked;
 
     private UUID photographer;
