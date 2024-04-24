@@ -1,9 +1,12 @@
 package com.SWE_photoshoot_booking.services.impl;
 
+import com.SWE_photoshoot_booking.domain.entities.Role;
 import com.SWE_photoshoot_booking.domain.entities.UserEntity;
 import com.SWE_photoshoot_booking.repositories.UserRepository;
 import com.SWE_photoshoot_booking.services.AbstractCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -32,6 +35,10 @@ public class UserService extends AbstractCrudService<UserEntity, UserRepository>
 
     public UserEntity findCustomerByEmail(String email) {
         return getRepository().findByEmail(email);
+    }
+
+    public Page<UserEntity> findAllByRole(Role role, Pageable pageable) {
+        return getRepository().findAllByRole(role, pageable);
     }
 
 

@@ -1,5 +1,6 @@
 package com.SWE_photoshoot_booking.services;
 
+import com.SWE_photoshoot_booking.domain.entities.Role;
 import com.SWE_photoshoot_booking.domain.entities.UserEntity;
 import com.SWE_photoshoot_booking.repositories.UserRepository;
 import org.springframework.data.domain.Page;

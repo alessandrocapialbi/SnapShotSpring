@@ -1,5 +1,6 @@
 package com.SWE_photoshoot_booking.services.impl;
 
+import com.SWE_photoshoot_booking.domain.entities.Role;
 import com.SWE_photoshoot_booking.domain.entities.TimeSlotEntity;
 import com.SWE_photoshoot_booking.repositories.TimeSlotRepository;
 import com.SWE_photoshoot_booking.services.AbstractCrudService;
@@ -35,4 +36,5 @@ public class TimeSlotService extends AbstractCrudService<TimeSlotEntity, TimeSlo
     public Page<TimeSlotEntity> findAllById(UUID id, Pageable pageable) {
         return getRepository().findAllByPhotographer_userID(id, pageable);
     }
+
 }
