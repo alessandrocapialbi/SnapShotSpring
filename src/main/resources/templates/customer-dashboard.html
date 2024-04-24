@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <title>Title</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Customer Dashboard</title>
 </head>
 <body>
 <!-- Navbar -->
@@ -34,7 +34,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Book an appointment</h5>
                     <p class="card-text">Click on the button below to make an appointment</p>
-                    <a href="@{/book-appointment}" class="btn btn-primary">Book an appointment</a>
+                    <a th:href="@{/book-appointment}" class="btn btn-primary">Book an appointment</a>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Your bookings</h5>
                     <p class="card-text">Click on the button below to show your reservations</p>
-                    <a href="/view-appointments" class="btn btn-primary">View bookings</a>
+                    <a class="btn btn-primary">View bookings</a>
                 </div>
             </div>
         </div>
