@@ -33,8 +33,11 @@ public class CustomerDashboardController {
     }
 
     @GetMapping("/book-appointment")
-    public String showBookAppointmentPage(Model model) {
-        model.addAttribute("appointment", new AppointmentDto());
+    public String showBookAppointmentPage(Model model, Principal principal) {
+        AppointmentDto appointment = new AppointmentDto();
+        UserEntity customer = userService.findByEmail(principal.getName());
+        appointment.setCustomer(customer.getUserID());
+        model.addAttribute("appointment", appointment);
         Pageable firstPageWithTenElements = PageRequest.of(0, 10);
         model.addAttribute("photographers", userService.findAllByRole(Role.PHOTOGRAPHER, firstPageWithTenElements));
         return "book-appointment";

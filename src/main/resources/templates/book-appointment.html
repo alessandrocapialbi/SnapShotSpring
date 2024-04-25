@@ -29,7 +29,7 @@
 </nav>
 <div class="container">
     <h1>Book Appointment</h1>
-    <form>
+    <form id="createForm" th:action="@{/appointments}" th:object="${appointment}" method="post">
         <div class="form-group">
             <label for="photographerSelect">Select a Photographer</label>
             <select id="photographerSelect" class="form-control">
@@ -50,6 +50,7 @@
                 <!-- Photoshoot services will be populated here using JavaScript -->
             </select>
         </div>
+        <input type="hidden" id="customer" name="customer" th:value="${appointment.customer}"/>
         <button type="submit" class="btn btn-primary">Book Appointment</button>
     </form>
 </div>
@@ -62,6 +63,8 @@
 
         var today = new Date();
         $('#photographerSelect').change(function () {
+            var timeslotID;
+            var photoshootID;
             var photographerId = $(this).val();
             if (photographerId) {
                 // Fetch time slots for the selected photographer
@@ -89,7 +92,7 @@
                             console.log(timeSlot.startTime + " - " + timeSlot.endTime);
                             var optionText = ' (' + dayOfWeek + ')';
                             optionText += " " + timeSlot.startTime + ' - ' + timeSlot.endTime;
-                            timeSlotSelect.append($('<option></option>').attr('value', optionText).text(optionText));
+                            timeSlotSelect.append($('<option></option>').attr('value', timeSlot.timeSlotID).text(optionText));
                         });
                     }
                 });
@@ -110,13 +113,52 @@
                                 return true;
                             }
                             var optionText = photoshoot.name + ' - ' + photoshoot.price + '€';
-                            photoshootSelect.append($('<option></option>').attr('value', optionText).text(optionText));
+                            photoshootSelect.append($('<option></option>').attr('value', photoshoot.photoshootID).text(optionText));
                         });
                     }
                 });
             }
         });
     });
+
+
+    $(document).ready(function () {
+        $('#createForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var customer = $('#customer').val();
+            var photographer = $('#photographerSelect').val();
+            var timeslot = $('#timeSlotSelect').val();
+            var photoshootEntity = $('#photoshootSelect').val();
+
+
+            console.log(JSON.stringify({
+                customer: customer,
+                photoshootEntity: photoshootEntity,
+                timeslot: timeslot,
+                photographer: photographer
+            }));
+
+            $.ajax({
+                url: '/appointments',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    customer: customer,
+                    photoshootEntity: photoshootEntity,
+                    timeslot: timeslot,
+                    photographer: photographer
+                }),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+
 </script>
 </body>
 </html>
