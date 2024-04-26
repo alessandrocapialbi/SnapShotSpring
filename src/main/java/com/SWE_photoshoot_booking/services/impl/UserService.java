@@ -34,7 +34,7 @@ public class UserService extends AbstractCrudService<UserEntity, UserRepository>
     }
 
     public UserEntity findCustomerByEmail(String email) {
-        return getRepository().findByEmail(email);
+        return getRepository().findByEmail(email).orElseThrow();
     }
 
     public Page<UserEntity> findAllByRole(Role role, Pageable pageable) {
