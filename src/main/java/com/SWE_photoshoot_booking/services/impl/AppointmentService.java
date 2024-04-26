@@ -25,6 +25,6 @@ public class AppointmentService extends AbstractCrudService<AppointmentEntity, A
     }
 
     public List<AppointmentEntity> findAllByUser(UUID userID) {
-        return getRepository().findAllByCustomer_CustomerID(userID);
+        return getRepository().findAllByCustomer_UserID(userID);
     }
 }
