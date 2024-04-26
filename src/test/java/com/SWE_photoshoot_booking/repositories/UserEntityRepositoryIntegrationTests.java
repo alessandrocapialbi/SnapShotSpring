@@ -23,12 +23,12 @@ public class UserEntityRepositoryIntegrationTests {
     private final UserRepository underTest;
 
     @Autowired
-    public UserEntityRepositoryIntegrationTests(UserRepository underTest){
+    public UserEntityRepositoryIntegrationTests(UserRepository underTest) {
         this.underTest = underTest;
     }
 
     @Test
-    public void testThatUserCanBeCreated() {
+    public void testThatUserCanBeCreated(){
         UserEntity userEntity = TestDataUtil.createTestUserA();
         underTest.save(userEntity);
 
@@ -54,6 +54,7 @@ public class UserEntityRepositoryIntegrationTests {
 
         assertIterableEquals(expectedCustomerEntities, result);
     }
+
     @Test
     public void testThatUserCanBeUpdated(){
 

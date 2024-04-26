@@ -1,6 +1,6 @@
 package com.SWE_photoshoot_booking.services.impl;
 
-import com.SWE_photoshoot_booking.domain.entities.Role;
+import com.SWE_photoshoot_booking.domain.entities.AppointmentEntity;
 import com.SWE_photoshoot_booking.domain.entities.TimeSlotEntity;
 import com.SWE_photoshoot_booking.repositories.TimeSlotRepository;
 import com.SWE_photoshoot_booking.services.AbstractCrudService;
@@ -15,9 +15,13 @@ import java.util.UUID;
 @Service
 public class TimeSlotService extends AbstractCrudService<TimeSlotEntity, TimeSlotRepository> {
 
+
+    AppointmentService appointmentService;
+
     @Autowired
-    public TimeSlotService(TimeSlotRepository timeSlotRepository) {
+    public TimeSlotService(TimeSlotRepository timeSlotRepository, AppointmentService appointmentService) {
         super(timeSlotRepository);
+        this.appointmentService = appointmentService;
     }
 
     @Override
@@ -37,4 +41,8 @@ public class TimeSlotService extends AbstractCrudService<TimeSlotEntity, TimeSlo
         return getRepository().findAllByPhotographer_userID(id, pageable);
     }
 
+    public void checkIfBookedAppointment(UUID id) {
+        Optional<AppointmentEntity> appointment = appointmentService.findByTimeSlot(id);
+        appointment.ifPresent(appointmentEntity -> appointmentService.deleteById(appointmentEntity.getAppointmentID()));
+    }
 }

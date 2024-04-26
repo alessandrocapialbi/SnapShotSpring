@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -26,5 +27,9 @@ public class AppointmentService extends AbstractCrudService<AppointmentEntity, A
 
     public List<AppointmentEntity> findAllByUser(UUID userID) {
         return getRepository().findAllByCustomer_UserID(userID);
+    }
+
+    public Optional<AppointmentEntity> findByTimeSlot(UUID id) {
+        return getRepository().findAllByTimeslot_TimeslotID(id);
     }
 }
