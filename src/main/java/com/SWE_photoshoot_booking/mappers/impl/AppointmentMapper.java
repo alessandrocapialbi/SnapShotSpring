@@ -76,6 +76,7 @@ public class AppointmentMapper implements Mapper<AppointmentEntity, AppointmentD
                 .orElseThrow(() -> new RuntimeException("Timeslot not found"));
         appointmentEntity.setTimeslot(timeslot);
 
+
         return appointmentEntity;
     }
 }

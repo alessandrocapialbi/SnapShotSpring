@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface TimeSlotRepository extends JpaRepository<TimeSlotEntity, UUID> {
 
     Page<TimeSlotEntity> findAllByPhotographer_userID(UUID photographerId, Pageable pageable);
+
+    Page<TimeSlotEntity> findByDayOfWeek(int dayOfWeek, Pageable pageable);
 }

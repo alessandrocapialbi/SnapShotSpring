@@ -7,6 +7,7 @@
     <title>Book Appointment</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <!-- Navbar -->
@@ -29,6 +30,11 @@
 </nav>
 <div class="container">
     <h1>Book Appointment</h1>
+    <div th:if="${param.success}">
+        <div class="alert alert-info">
+            You have successfully booked the appointment!
+        </div>
+    </div>
     <form id="createForm" th:action="@{/appointments}" th:object="${appointment}" method="post">
         <div class="form-group">
             <label for="photographerSelect">Select a Photographer</label>
@@ -51,6 +57,7 @@
             </select>
         </div>
         <input type="hidden" id="customer" name="customer" th:value="${appointment.customer}"/>
+
         <button type="submit" class="btn btn-primary">Book Appointment</button>
     </form>
 </div>
@@ -63,8 +70,6 @@
 
         var today = new Date();
         $('#photographerSelect').change(function () {
-            var timeslotID;
-            var photoshootID;
             var photographerId = $(this).val();
             if (photographerId) {
                 // Fetch time slots for the selected photographer
@@ -78,7 +83,7 @@
                         var timeSlotSelect = $('#timeSlotSelect');
                         timeSlotSelect.empty();
                         $.each(data.content, function (index, timeSlot) {
-                            if (timeSlot === undefined) {
+                            if (timeSlot === undefined || timeSlot.booked === true) {
                                 return true;
                             }
                             var diff = timeSlot.dayOfWeek - today.getDay();
@@ -90,7 +95,8 @@
                             futureDate.setDate(today.getDate() + diff);
                             var dayOfWeek = daysOfWeek[futureDate.getDay()];
                             console.log(timeSlot.startTime + " - " + timeSlot.endTime);
-                            var optionText = ' (' + dayOfWeek + ')';
+                            var optionText = ' (' + dayOfWeek +
+                                ')';
                             optionText += " " + timeSlot.startTime + ' - ' + timeSlot.endTime;
                             timeSlotSelect.append($('<option></option>').attr('value', timeSlot.timeSlotID).text(optionText));
                         });
@@ -131,14 +137,6 @@
             var timeslot = $('#timeSlotSelect').val();
             var photoshootEntity = $('#photoshootSelect').val();
 
-
-            console.log(JSON.stringify({
-                customer: customer,
-                photoshootEntity: photoshootEntity,
-                timeslot: timeslot,
-                photographer: photographer
-            }));
-
             $.ajax({
                 url: '/appointments',
                 type: 'POST',
@@ -151,6 +149,27 @@
                 }),
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader(header, token);
+                },
+                success: function (data) {
+                    Swal.fire('Appointment booked successfully!');
+                    $.ajax({
+                        url: '/timeslots/' + timeslot,
+                        type: 'PATCH',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            booked: true,
+                            photographer: photographer
+                        }),
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                    $('#photographerSelect').val('');
+                    $('#timeSlotSelect').empty();
+                    $('#photoshootSelect').empty();
                 },
                 error: function (error) {
                     console.log(error);
