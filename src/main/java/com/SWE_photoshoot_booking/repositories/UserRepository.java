@@ -13,6 +13,6 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
     UserEntity findByEmail(String email);
-    Page<UserEntity> findAllByRole(Role role, Pageable pageable);
 
+    Page<UserEntity> findAllByRole(Role role, Pageable pageable);
 }

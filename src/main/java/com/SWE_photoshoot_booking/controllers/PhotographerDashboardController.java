@@ -40,14 +40,14 @@ public class PhotographerDashboardController {
 
     @GetMapping("/photographer-dashboard")
     public String showPhotographerDashboard(Model model, Principal principal) {
-        UserEntity photographer = userService.findByEmail(principal.getName());
+        UserEntity photographer = userService.findCustomerByEmail(principal.getName());
         model.addAttribute("photographerName", photographer.getName());
         return "photographer-dashboard";
     }
 
     @GetMapping("/manage-photoshoots")
     public String showManagePhotoshootsPage(Model model, Pageable pageable, Principal principal) {
-        UserEntity photographer = userService.findByEmail(principal.getName());
+        UserEntity photographer = userService.findCustomerByEmail(principal.getName());
         Page<PhotoshootEntity> photoshoots = photoshootService.findAllById(photographer.getUserID(), pageable);
         model.addAttribute("photoshoots", photoshoots);
         PhotoshootDto photoshoot = new PhotoshootDto();
@@ -60,7 +60,7 @@ public class PhotographerDashboardController {
     @GetMapping("/manage-timeslots")
     public String showManageTimeslotsPage(Model model, Pageable pageable, Principal principal) {
         logger.info("Showing manage timeslots page");
-        UserEntity photographer = userService.findByEmail(principal.getName());
+        UserEntity photographer = userService.findCustomerByEmail(principal.getName());
         Page<TimeSlotEntity> timeslots = timeSlotService.findAllById(photographer.getUserID(), pageable);
         model.addAttribute("timeslots", timeslots);
         TimeSlotDto timeslot = new TimeSlotDto();

@@ -42,4 +42,5 @@ public class UserService extends AbstractCrudService<UserEntity, UserRepository>
     }
 
 
+
 }

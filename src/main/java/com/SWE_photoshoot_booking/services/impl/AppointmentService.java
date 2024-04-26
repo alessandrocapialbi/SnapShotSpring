@@ -6,6 +6,7 @@ import com.SWE_photoshoot_booking.services.AbstractCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -21,5 +22,9 @@ public class AppointmentService extends AbstractCrudService<AppointmentEntity, A
     public AppointmentEntity partialUpdate(UUID id, AppointmentEntity entity) {
         entity.setAppointmentID(id);
         return getRepository().save(entity);
+    }
+
+    public List<AppointmentEntity> findAllByUser(UUID userID) {
+        return getRepository().findAllByCustomer_CustomerID(userID);
     }
 }

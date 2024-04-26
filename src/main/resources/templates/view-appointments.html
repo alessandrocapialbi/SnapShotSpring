@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your bookings</title>
+</head>
+<body>
+
+<!-- Table for displaying existing photoshoots -->
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">
+            <!-- Button trigger modal for creating a new photoshoot -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                +
+            </button>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterate over the photoshoots and display their details -->
+    <tr th:each="photoshoot : ${photoshoots.content}">
+        <td th:text="${photoshoot.name}" class="name"></td>
+        <td th:text="${photoshoot.price}" class="price"></td>
+        <td>
+            <!-- Button for editing the photoshoot -->
+            <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#editModal"
+                    th:data-photoshoot-id="${photoshoot.photoshootID}">Edit
+            </button>
+            <button type="button" class="btn btn-danger delete-button"
+                    th:data-photoshoot-id="${photoshoot.photoshootID}">Delete
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
