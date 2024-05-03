@@ -23,8 +23,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {       http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/index", "/register", "register/user", "/login").permitAll()
                         .anyRequest().authenticated()

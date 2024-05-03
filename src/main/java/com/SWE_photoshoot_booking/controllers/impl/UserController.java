@@ -19,6 +19,4 @@ public class UserController extends AbstractController<UserEntity, UserDto, User
     public UserController(UserService userService, Mapper<UserEntity, UserDto> customerMapper) {
         super(userService, customerMapper);
     }
-
-
 }

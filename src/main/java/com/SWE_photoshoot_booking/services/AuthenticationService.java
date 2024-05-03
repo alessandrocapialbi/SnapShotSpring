@@ -38,9 +38,9 @@ public class AuthenticationService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        logger.info("loginUser called with email: {}", username);
-        UserEntity user = userRepository.findByEmail(username).orElseThrow();
+    public UserDetails loadUserByUsername(String email) {
+        logger.info("loginUser called with email: {}", email);
+        UserEntity user = userRepository.findByEmail(email).orElseThrow();
         return User.withUsername(user.getEmail())
                 .password(user.getPassword())
                 .roles(user.getRole().name())

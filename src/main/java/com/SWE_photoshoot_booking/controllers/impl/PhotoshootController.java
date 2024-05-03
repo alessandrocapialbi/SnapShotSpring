@@ -30,7 +30,7 @@ public class PhotoshootController extends AbstractController<PhotoshootEntity, P
     }
 
     @GetMapping("/photographer/{photographerId}")
-    public Page<PhotoshootDto> listTimeSlotsByPhotographer(@PathVariable UUID photographerId, Pageable pageable) {
+    public Page<PhotoshootDto> listPhotoshootsByPhotographer(@PathVariable UUID photographerId, Pageable pageable) {
         Page<PhotoshootEntity> photoshoots = photoshootService.findAllById(photographerId, pageable);
         return photoshoots.map(mapper::mapTo);
     }
